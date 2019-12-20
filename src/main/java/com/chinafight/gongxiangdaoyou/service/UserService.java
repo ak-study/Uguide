@@ -26,22 +26,12 @@ public class UserService {
      * @param userPhone
      * @return
      */
-    public Object insertUser(String userName,String userPassWord,
+    public Object insertUser(String userName, String userPassWord,
                              String userPhone){
         HashMap<Object, Object> map = new HashMap<>();
-        if(userName.length()<6|| userName.length()>14){
-            map.put("status",CustomerEnum.ERROR_EXCEPTION_USERNAME.getMsgMap());
-            return map;
-        }
-        boolean matches = userPassWord.matches(".*[a-zA-Z]+.*");
-        if(!matches || userPassWord.length()<6 || userPassWord.length()>14){
-            map.put("status",CustomerEnum.ERROR_EXCEPTION_PASSWORD.getMsgMap());
-            return map;
-        }
-        boolean phoneMatches = userPhone.matches("[0-9]{11}");
-        if(!phoneMatches){
-            map.put("status",CustomerEnum.ERROR_EXCEPTION_PHONE.getMsgMap());
-            return map;
+        HashMap<Object, Object> paraMsg = Utils.isTrue(userName, userPassWord, userPhone);
+        if(paraMsg.size()>0){
+            return paraMsg;
         }
         String userNick="新用户"+System.currentTimeMillis();
         UserModel user = new UserModel();
@@ -57,9 +47,10 @@ public class UserService {
         user.setUser_lv(1);
         user.setUser_vip(0);
         user.setUser_avatar(this.avatar);
+        user.setUser_trueName("");
         //前端数据
         user.setUser_password(userPassWord);
-        user.setUser_card(0);
+        user.setUser_card("");
         user.setUser_phone(userPhone);
         userMapper.insertUser(user);
         UserModel userByUserName = userMapper.getUserByUserName(user);
@@ -83,7 +74,7 @@ public class UserService {
     }
 
     public Object updateUser(String userNick,String userPassWord,String userAvatar,
-                             Integer userCard,Integer userPhone,Integer userId){
+                             String userCard,Integer userPhone,Integer userId,String userTrueName){
         if(userNick==null || userPassWord==null||userAvatar==null||userCard==null||userPhone==null||
         userNick==""||userPassWord==""||userAvatar==""||userId==null){
             return  CustomerEnum.ERROR_NULL_POINT.getMsgMap();
@@ -94,6 +85,7 @@ public class UserService {
         if(tmpUser==null){
             return CustomerEnum.ERROR_NULL_USER.getMsgMap();
         }
+        user.setUser_trueName(userTrueName);
         user.setUser_nick(userNick);
         user.setUser_password(userPassWord);
         user.setUser_avatar(userAvatar);

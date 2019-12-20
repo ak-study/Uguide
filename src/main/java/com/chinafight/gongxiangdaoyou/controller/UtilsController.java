@@ -1,13 +1,17 @@
 package com.chinafight.gongxiangdaoyou.controller;
 
+import ch.qos.logback.core.util.FileUtil;
 import com.chinafight.gongxiangdaoyou.eunm.CustomerEnum;
 import com.chinafight.gongxiangdaoyou.provider.TCProvider;
 import com.chinafight.gongxiangdaoyou.utils.CodeUtil;
 import com.chinafight.gongxiangdaoyou.utils.Utils;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +20,7 @@ import java.io.*;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Controller
 @RestController
@@ -26,11 +31,10 @@ public class UtilsController {
     @Autowired
     TCProvider tcProvider;
 
-
     @GetMapping("getCode")
     public Object getImg() throws IOException {
         HashMap<Object, Object> msgMap = new HashMap<>();
-        File file = new File("F://img/" + System.currentTimeMillis() + ".jpg");
+        File file = new File("D://img/" + System.currentTimeMillis() + ".jpg");
         OutputStream out = new FileOutputStream(file);
         Map<String, Object> map = CodeUtil.generateCodeAndPic();
         ImageIO.write((RenderedImage) map.get("codePic"), "jpeg", out);
@@ -55,5 +59,22 @@ public class UtilsController {
         return map;
     }
 
+    @PostMapping("upload")
+    public Object upLoadFile(MultipartFile file) throws IOException {
+        File f = null;
+        URL url;
+        if(file.equals("")||file.getSize()<=0){
+            file = null;
+        }else{
+            InputStream ins = file.getInputStream();
+            f=new File(Objects.requireNonNull(file.getOriginalFilename()));
+            Utils.inputStreamToFile(ins,f);
+            ins.close();
+            url = tcProvider.upLoad(f);
+            Utils.deleteTempFile(f);//删除临时文件
+            return url;
+        }
+        return CustomerEnum.ERROR_NULL_POINT.getMsgMap();
+    }
 
 }

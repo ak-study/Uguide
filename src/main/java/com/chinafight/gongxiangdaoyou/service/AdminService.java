@@ -108,7 +108,6 @@ public class AdminService {
     }
 
     private Object isNull(AdminModel adminModel) {
-        HashMap<Object, Object> msgMap = new HashMap<>();
         if (adminModel.getUserName() == null ||
                 adminModel.getPassWord() == null ||
                 adminModel.getUserName() == "" ||

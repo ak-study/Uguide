@@ -39,8 +39,8 @@ public class UserController {
 
     @PostMapping("updateUser")
     public Object updateUser(String userNick,String userPassWord,String userAvatar,
-                             Integer userCard,Integer userPhone,Integer userId){
-        Object code = userService.updateUser(userNick, userPassWord, userAvatar, userCard, userPhone, userId);
+                             String userCard,Integer userPhone,Integer userId,String userTrueName){
+        Object code = userService.updateUser(userNick, userPassWord, userAvatar, userCard, userPhone, userId,userTrueName);
         return code;
     }
 

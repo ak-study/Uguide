@@ -4,14 +4,31 @@ public class GuideModel {
     private Integer guide_id;
     private Integer guide_lv;
     private String guide_name;
-    private Integer guide_phone;
+    private String guide_phone;
     private Integer guide_like;
     private String guide_password;
     private String guide_avatar;
     private String guide_nick;
-    private Integer guide_card;
+    private String guide_card;
     private Integer guide_vip;
-    private String guide_power;
+    private Integer guide_power;
+    private String guide_trueName;
+
+    public String getGuide_trueName() {
+        return guide_trueName;
+    }
+
+    public void setGuide_id(Integer guide_id) {
+        this.guide_id = guide_id;
+    }
+
+    public void setGuide_lv(Integer guide_lv) {
+        this.guide_lv = guide_lv;
+    }
+
+    public void setGuide_trueName(String guide_trueName) {
+        this.guide_trueName = guide_trueName;
+    }
 
     public String getGuide_password() {
         return guide_password;
@@ -61,11 +78,11 @@ public class GuideModel {
         this.guide_name = guide_name;
     }
 
-    public Integer getGuide_phone() {
+    public String getGuide_phone() {
         return guide_phone;
     }
 
-    public void setGuide_phone(Integer guide_phone) {
+    public void setGuide_phone(String guide_phone) {
         this.guide_phone = guide_phone;
     }
 
@@ -93,11 +110,11 @@ public class GuideModel {
         this.guide_nick = guide_nick;
     }
 
-    public Integer getGuide_card() {
+    public String getGuide_card() {
         return guide_card;
     }
 
-    public void setGuide_card(Integer guide_card) {
+    public void setGuide_card(String guide_card) {
         this.guide_card = guide_card;
     }
 
@@ -109,11 +126,11 @@ public class GuideModel {
         this.guide_vip = guide_vip;
     }
 
-    public String getGuide_power() {
+    public Integer getGuide_power() {
         return guide_power;
     }
 
-    public void setGuide_power(String guide_power) {
+    public void setGuide_power(Integer guide_power) {
         this.guide_power = guide_power;
     }
 }

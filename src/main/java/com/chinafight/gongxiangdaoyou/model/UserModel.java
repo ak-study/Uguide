@@ -6,11 +6,24 @@ public class UserModel {
     private String user_name;
     private String user_password;
     private String user_avatar;
-    private Integer user_card;
+    private String user_card;
     private Integer user_vip;
     private Integer user_lv;
     private Integer user_power;
     private String user_phone;
+    private String user_trueName;
+
+    public void setUser_id(Integer user_id) {
+        this.user_id = user_id;
+    }
+
+    public String getUser_trueName() {
+        return user_trueName;
+    }
+
+    public void setUser_trueName(String user_trueName) {
+        this.user_trueName = user_trueName;
+    }
 
     @Override
     public String toString() {
@@ -68,11 +81,11 @@ public class UserModel {
         this.user_avatar = user_avatar;
     }
 
-    public Integer getUser_card() {
+    public String getUser_card() {
         return user_card;
     }
 
-    public void setUser_card(Integer user_card) {
+    public void setUser_card(String user_card) {
         this.user_card = user_card;
     }
 
