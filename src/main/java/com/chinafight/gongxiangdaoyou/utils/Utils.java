@@ -1,6 +1,7 @@
 package com.chinafight.gongxiangdaoyou.utils;
 
 import com.chinafight.gongxiangdaoyou.eunm.CustomerEnum;
+import com.chinafight.gongxiangdaoyou.model.GuideModel;
 import com.chinafight.gongxiangdaoyou.model.UserModel;
 
 import java.io.File;
@@ -11,6 +12,7 @@ import java.util.HashMap;
 
 public class Utils {
     public static final HashMap<String, UserModel> userLoginMap=new HashMap<>();
+    public static final HashMap<String, GuideModel> guideLoginMap=new HashMap<>();
 
     public static boolean deleteFile(String pathname){
         boolean result = false;

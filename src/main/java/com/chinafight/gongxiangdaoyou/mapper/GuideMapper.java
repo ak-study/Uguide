@@ -27,11 +27,18 @@ public interface  GuideMapper {
             ",#{guide_phone},#{guide_trueName},#{guide_like})")
     void insertGuide(GuideModel guideModel);
 
-    //6个变量
-    @Update("update guide set guide_nick=#{guide_nick},guide_password=#{guide_password},guide_avatar=#{guide_avatar}," +
+    //5个变量
+    @Update("update guide set guide_nick=#{guide_nick},guide_password=#{guide_password}," +
             "guide_card=#{guide_card},guide_phone=#{guide_phone},guide_truename=#{guide_trueName} where guide_id=#{guide_id}")
     void updateGuide(GuideModel guideModel);
 
-    @Select("select * from guide where guide_name=#{guideName} and guide_password=#{guide_password}")
+    @Select("select * from guide where guide_name=#{guide_name} and guide_password=#{guide_password}")
     GuideModel guideLogin(GuideModel guideModel);
+
+    @Select("select * from guide where guide_name regexp #{guide_name}")
+    List<GuideModel> searchGuideByUserName(String guideName);
+
+    @Update("update guide set guide_avatar=#{guide_avatar} where guide_id=#{guide_id}")
+    void  updateGuideAvatar(String guide_avatar,Integer guide_id);
+
 }

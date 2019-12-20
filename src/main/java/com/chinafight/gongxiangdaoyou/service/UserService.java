@@ -3,6 +3,7 @@ package com.chinafight.gongxiangdaoyou.service;
 import com.chinafight.gongxiangdaoyou.eunm.CustomerEnum;
 import com.chinafight.gongxiangdaoyou.mapper.UserMapper;
 import com.chinafight.gongxiangdaoyou.model.UserModel;
+import com.chinafight.gongxiangdaoyou.utils.CustomerUtils;
 import com.chinafight.gongxiangdaoyou.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class UserService {
@@ -74,7 +74,7 @@ public class UserService {
     }
 
     public Object updateUser(String userNick,String userPassWord,String userAvatar,
-                             String userCard,Integer userPhone,Integer userId,String userTrueName){
+                             String userCard,String userPhone,Integer userId,String userTrueName){
         if(userNick==null || userPassWord==null||userAvatar==null||userCard==null||userPhone==null||
         userNick==""||userPassWord==""||userAvatar==""||userId==null){
             return  CustomerEnum.ERROR_NULL_POINT.getMsgMap();
@@ -90,7 +90,7 @@ public class UserService {
         user.setUser_password(userPassWord);
         user.setUser_avatar(userAvatar);
         user.setUser_card(userCard);
-        user.setUser_phone(String.valueOf(userPhone));
+        user.setUser_phone(userPhone);
         userMapper.updateUser(user);
         return CustomerEnum.NORMAL_ADMIN_UPDATE.getMsgMap();
     }
@@ -104,21 +104,18 @@ public class UserService {
     }
 
     public Object userLogin(String userName, String userPassWord, HttpServletRequest request){
+        UserModel userModel = userMapper.userLogin(userName, userPassWord);
         HashMap<Object, Object> map = new HashMap<>();
-        UUID token = UUID.randomUUID();
-        UserModel user = userMapper.userLogin(userName, userPassWord);
-        if(user!=null&&user.getUser_power()<1){
-            map.put("status", CustomerEnum.ERROR_ADMIN_FREEZE.getMsgMap());
+        if(userModel!=null){
+            HashMap<Object, Object> login = CustomerUtils.login(userModel, null);
+            if(login==null){
+                map.put("status",CustomerEnum.ERROR_ADMIN_FREEZE.getMsgMap());
+                return map;
+            }else if(login.size()>0){
+                return login;
+            }
         }
-        if(user!=null){
-            request.getSession().setAttribute(userName,user);
-            map.put("token", token);
-            map.put("data",user);
-            map.put("status", CustomerEnum.NORMAL_ADMIN_LOGIN.getMsgMap());
-            Utils.userLoginMap.put(userName,user);
-            return map;
-        }
-        map.put("status", CustomerEnum.ERROR_LOGIN.getMsgMap());
+        map.put("status",CustomerEnum.ERROR_LOGIN.getMsgMap());
         return map;
     }
 
@@ -129,6 +126,17 @@ public class UserService {
         }else{
             return CustomerEnum.ERROR_NULL_USER.getMsgMap();
         }
-        return CustomerEnum.NORMAL_STATUS.getMsgMap();
+        return CustomerEnum.NORMAL_USER_EXIT.getMsgMap();
+    }
+
+    public  Object updateUserAvatar(String userAvatar,Integer userId){
+        UserModel userModel = new UserModel();
+        userModel.setUser_id(userId);
+        UserModel tempUser = userMapper.getUserById(userModel);
+        if(tempUser==null){
+            return CustomerEnum.ERROR_NULL_USER.getMsgMap();
+        }
+        userMapper.updateUserAvatar(userAvatar,userId);
+        return CustomerEnum.NORMAL_ADMIN_UPDATE.getMsgMap();
     }
 }

@@ -39,7 +39,7 @@ public class UserController {
 
     @PostMapping("updateUser")
     public Object updateUser(String userNick,String userPassWord,String userAvatar,
-                             String userCard,Integer userPhone,Integer userId,String userTrueName){
+                             String userCard,String userPhone,Integer userId,String userTrueName){
         Object code = userService.updateUser(userNick, userPassWord, userAvatar, userCard, userPhone, userId,userTrueName);
         return code;
     }
@@ -92,5 +92,10 @@ public class UserController {
     @GetMapping("getUserCount")
     public int getUserCount(){
         return WebSocketServer.getOnlineCount();
+    }
+
+    @PostMapping("updateUserAvatar")
+    public Object updateUserAvatar (String userAvatar,Integer userId){
+        return userService.updateUserAvatar(userAvatar, userId);
     }
 }

@@ -10,6 +10,7 @@ public enum CustomerEnum {
     NORMAL_ADMIN_DELETE("删除成功","200"),
     NORMAL_ADMIN_UPDATE("更新成功","200"),
     NORMAL_ADMIN_SELECT("已搜索到相关用户","200"),
+    NORMAL_USER_EXIT("退出成功","200"),
     ERROR_STATUS("状态异常","500"),
     ERROR_ADMIN_EXIST("用户已存在","500"),
     ERROR_LOGIN("登陆失败","500"),

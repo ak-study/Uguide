@@ -26,7 +26,7 @@ public interface UserMapper {
     @Delete("delete from user where user_id = #{user_id}")
     void deleteUserById(UserModel userModel);
 
-    @Update("update user set user_nick=#{user_nick},user_password=#{user_password},user_avatar=#{user_avatar}," +
+    @Update("update user set user_nick=#{user_nick},user_password=#{user_password}," +
             "user_card=#{user_card},user_phone=#{user_phone},user_truename=#{user_trueName} where user_id=#{user_id}")
     void updateUser(UserModel userModel);
 
@@ -36,4 +36,6 @@ public interface UserMapper {
     @Select("select * from user where user_name=#{userName} and user_password=#{userPassWord}")
     UserModel userLogin(String userName,String userPassWord);
 
+    @Update("update user set user_avatar=#{user_avatar} where user_id=#{user_id}")
+    void  updateUserAvatar(String user_avatar,Integer user_id);
 }
