@@ -36,7 +36,7 @@ public class Utils {
             map.put("status",CustomerEnum.ERROR_EXCEPTION_PHONE.getMsgMap());
             return map;
         }
-        if(userName.length()<6|| userName.length()>14){
+        if(userName!=null && (userName.length()<6|| userName.length()>14)){
             map.put("status",CustomerEnum.ERROR_EXCEPTION_USERNAME.getMsgMap());
             return map;
         }

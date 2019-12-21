@@ -1,5 +1,6 @@
 package com.chinafight.gongxiangdaoyou.mapper;
 
+import com.chinafight.gongxiangdaoyou.model.ProfileModel;
 import com.chinafight.gongxiangdaoyou.model.UserModel;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
@@ -26,7 +27,7 @@ public interface UserMapper {
     @Delete("delete from user where user_id = #{user_id}")
     void deleteUserById(UserModel userModel);
 
-    @Update("update user set user_nick=#{user_nick},user_password=#{user_password}," +
+    @Update("update user set user_nick=#{user_nick},user_sex=#{user_sex}," +
             "user_card=#{user_card},user_phone=#{user_phone},user_truename=#{user_trueName} where user_id=#{user_id}")
     void updateUser(UserModel userModel);
 
@@ -37,5 +38,6 @@ public interface UserMapper {
     UserModel userLogin(String userName,String userPassWord);
 
     @Update("update user set user_avatar=#{user_avatar} where user_id=#{user_id}")
-    void  updateUserAvatar(String user_avatar,Integer user_id);
+    void updateUserAvatar(String user_avatar,Integer user_id);
+
 }

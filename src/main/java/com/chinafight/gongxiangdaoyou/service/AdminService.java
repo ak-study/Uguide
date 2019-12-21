@@ -89,16 +89,15 @@ public class AdminService {
         HashMap<Object, Object> map = new HashMap<>();
         UUID token = UUID.randomUUID();
         AdminModel admin = adminMapper.selectAdminByUserName(adminModel);
-        String userName = admin.getUserName();
-        AdminModel loginAdmin = adminMapper.loginAdmin(adminModel);
         if (admin == null) {
             return null;
         }
+        AdminModel loginAdmin = adminMapper.loginAdmin(adminModel);
         if (!admin.getStatus().equals("正常")) {
             return null;
         }
         if (loginAdmin != null) {
-            request.getSession().setAttribute(userName,admin);
+            request.getSession().setAttribute(adminModel.getUserName(),admin);
             map.put("token",token);
             map.put("status", CustomerEnum.NORMAL_ADMIN_LOGIN.getMsgMap());
             map.put("power",admin.getPower());

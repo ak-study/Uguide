@@ -1,11 +1,11 @@
 package com.chinafight.gongxiangdaoyou.controller;
 
-import ch.qos.logback.core.util.FileUtil;
+import com.chinafight.gongxiangdaoyou.cache.CacheTags;
+import com.chinafight.gongxiangdaoyou.cache.ProfileTag;
 import com.chinafight.gongxiangdaoyou.eunm.CustomerEnum;
 import com.chinafight.gongxiangdaoyou.provider.TCProvider;
 import com.chinafight.gongxiangdaoyou.utils.CodeUtil;
 import com.chinafight.gongxiangdaoyou.utils.Utils;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +19,7 @@ import java.awt.image.RenderedImage;
 import java.io.*;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -34,7 +35,7 @@ public class UtilsController {
     @GetMapping("getCode")
     public Object getImg() throws IOException {
         HashMap<Object, Object> msgMap = new HashMap<>();
-        File file = new File("D://img/" + System.currentTimeMillis() + ".jpg");
+        File file = new File("C:\\Users\\10424\\Desktop" + System.currentTimeMillis() + ".jpg");
         OutputStream out = new FileOutputStream(file);
         Map<String, Object> map = CodeUtil.generateCodeAndPic();
         ImageIO.write((RenderedImage) map.get("codePic"), "jpeg", out);
@@ -77,4 +78,14 @@ public class UtilsController {
         return CustomerEnum.ERROR_NULL_POINT.getMsgMap();
     }
 
+    @GetMapping("getUserTags")
+    public Object getUserTags(){
+        List<ProfileTag> userTag = CacheTags.get(1, null);
+        return userTag;
+    }
+
+    @GetMapping("getGuideTags")
+    public Object getGuideTags(){
+        return CacheTags.get(2, null);
+    }
 }

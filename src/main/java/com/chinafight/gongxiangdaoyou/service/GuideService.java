@@ -9,10 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class GuideService {
@@ -101,10 +99,10 @@ public class GuideService {
         return CustomerEnum.NORMAL_USER_EXIT.getMsgMap();
     }
 
-    public Object updateGuide(String guideNick,String guidePassWord,String guideAvatar,
-                             String guideCard,String guidePhone,Integer guideId,String guideTrueName){
-        if(guideNick==null || guidePassWord==null||guideAvatar==null||guideCard==null||guidePhone==null||
-                guideId==null||guideTrueName==null|| guideNick==""||guidePassWord==""||guideAvatar==""||
+    public Object updateGuide(String guideNick,String guidePassWord,String guideAvatar, String guideCard
+            ,String guidePhone,Integer guideId,String guideTrueName,Integer guideSex){
+        if(guideNick==null ||guideCard==null||guidePhone==null||
+                guideId==null||guideTrueName==null|| guideNick==""||
                 guideCard==""||guidePhone==""||guideTrueName==""){
             return  CustomerEnum.ERROR_NULL_POINT.getMsgMap();
         }
@@ -114,6 +112,7 @@ public class GuideService {
         if(tempGuide==null){
             return CustomerEnum.ERROR_NULL_USER.getMsgMap();
         }
+        guide.setGuide_sex(guideSex);
         guide.setGuide_trueName(guideTrueName);
         guide.setGuide_nick(guideNick);
         guide.setGuide_password(guidePassWord);

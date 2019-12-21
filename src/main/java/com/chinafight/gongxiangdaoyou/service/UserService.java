@@ -1,7 +1,9 @@
 package com.chinafight.gongxiangdaoyou.service;
 
 import com.chinafight.gongxiangdaoyou.eunm.CustomerEnum;
+import com.chinafight.gongxiangdaoyou.mapper.ProfileMapper;
 import com.chinafight.gongxiangdaoyou.mapper.UserMapper;
+import com.chinafight.gongxiangdaoyou.model.ProfileModel;
 import com.chinafight.gongxiangdaoyou.model.UserModel;
 import com.chinafight.gongxiangdaoyou.utils.CustomerUtils;
 import com.chinafight.gongxiangdaoyou.utils.Utils;
@@ -16,6 +18,9 @@ import java.util.List;
 public class UserService {
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    ProfileMapper profileMapper;
 
     @Value("${avatar}")
     String avatar;
@@ -73,10 +78,10 @@ public class UserService {
         return CustomerEnum.NORMAL_ADMIN_DELETE.getMsgMap();
     }
 
-    public Object updateUser(String userNick,String userPassWord,String userAvatar,
+    public Object updateUser(String userNick,String userPassWord,String userAvatar,Integer userSex,
                              String userCard,String userPhone,Integer userId,String userTrueName){
-        if(userNick==null || userPassWord==null||userAvatar==null||userCard==null||userPhone==null||
-        userNick==""||userPassWord==""||userAvatar==""||userId==null){
+        if(userNick==null ||userCard==null||userPhone==null||userSex==null||
+        userNick==""||userId==null){
             return  CustomerEnum.ERROR_NULL_POINT.getMsgMap();
         }
         UserModel user = new UserModel();
@@ -85,6 +90,7 @@ public class UserService {
         if(tmpUser==null){
             return CustomerEnum.ERROR_NULL_USER.getMsgMap();
         }
+        user.setUser_sex(userSex);
         user.setUser_trueName(userTrueName);
         user.setUser_nick(userNick);
         user.setUser_password(userPassWord);
@@ -139,4 +145,5 @@ public class UserService {
         userMapper.updateUserAvatar(userAvatar,userId);
         return CustomerEnum.NORMAL_ADMIN_UPDATE.getMsgMap();
     }
+
 }

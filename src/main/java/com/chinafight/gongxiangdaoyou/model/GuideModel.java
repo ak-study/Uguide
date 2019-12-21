@@ -13,6 +13,15 @@ public class GuideModel {
     private Integer guide_vip;
     private Integer guide_power;
     private String guide_trueName;
+    private Integer guide_sex;
+
+    public Integer getGuide_sex() {
+        return guide_sex;
+    }
+
+    public void setGuide_sex(Integer guide_sex) {
+        this.guide_sex = guide_sex;
+    }
 
     public String getGuide_trueName() {
         return guide_trueName;

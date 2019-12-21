@@ -1,7 +1,10 @@
 package com.chinafight.gongxiangdaoyou.controller;
 
 import com.chinafight.gongxiangdaoyou.eunm.CustomerEnum;
+import com.chinafight.gongxiangdaoyou.mapper.ProfileMapper;
 import com.chinafight.gongxiangdaoyou.mapper.UserMapper;
+import com.chinafight.gongxiangdaoyou.model.UserModel;
+import com.chinafight.gongxiangdaoyou.service.ProfileService;
 import com.chinafight.gongxiangdaoyou.service.UserService;
 import com.chinafight.gongxiangdaoyou.socket.WebSocketServer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +13,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 
 @Controller
@@ -23,6 +26,10 @@ public class UserController {
     UserService userService;
     @Autowired
     UserMapper userMapper;
+    @Autowired
+    ProfileMapper profileMapper;
+    @Autowired
+    ProfileService profileService;
 
     @PostMapping("insertUser")
     public Object insertUser(String userName, String userPassWord,
@@ -38,9 +45,10 @@ public class UserController {
     }
 
     @PostMapping("updateUser")
-    public Object updateUser(String userNick,String userPassWord,String userAvatar,
+    public Object updateUser(String userNick,String userAvatar,Integer userSex,
                              String userCard,String userPhone,Integer userId,String userTrueName){
-        Object code = userService.updateUser(userNick, userPassWord, userAvatar, userCard, userPhone, userId,userTrueName);
+        Object code = userService.updateUser(userNick, "",
+                userAvatar, userSex,userCard, userPhone, userId,userTrueName);
         return code;
     }
 
@@ -97,5 +105,21 @@ public class UserController {
     @PostMapping("updateUserAvatar")
     public Object updateUserAvatar (String userAvatar,Integer userId){
         return userService.updateUserAvatar(userAvatar, userId);
+    }
+
+    @PostMapping("getUserById")
+    public Object getUserById(Integer userId){
+        HashMap<Object, Object> map = new HashMap<>();
+        UserModel userModel = new UserModel();
+        userModel.setUser_id(userId);
+        HashMap<Object, Object> userProfile = profileService.getUserProfile(userId);
+        UserModel user = userMapper.getUserById(userModel);
+        if(user==null){
+            map.put("status",CustomerEnum.ERROR_NULL_USER.getMsgMap());
+        }
+        map.put("status",CustomerEnum.NORMAL_STATUS.getMsgMap());
+        map.put("data",user);
+        map.put("profile",userProfile);
+        return map;
     }
 }

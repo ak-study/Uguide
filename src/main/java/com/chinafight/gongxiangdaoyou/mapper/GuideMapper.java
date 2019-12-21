@@ -28,7 +28,7 @@ public interface  GuideMapper {
     void insertGuide(GuideModel guideModel);
 
     //5个变量
-    @Update("update guide set guide_nick=#{guide_nick},guide_password=#{guide_password}," +
+    @Update("update guide set guide_nick=#{guide_nick},guide_sex=#{guide_sex}," +
             "guide_card=#{guide_card},guide_phone=#{guide_phone},guide_truename=#{guide_trueName} where guide_id=#{guide_id}")
     void updateGuide(GuideModel guideModel);
 

@@ -12,6 +12,15 @@ public class UserModel {
     private Integer user_power;
     private String user_phone;
     private String user_trueName;
+    private Integer user_sex;
+
+    public Integer getUser_sex() {
+        return user_sex;
+    }
+
+    public void setUser_sex(Integer user_sex) {
+        this.user_sex = user_sex;
+    }
 
     public void setUser_id(Integer user_id) {
         this.user_id = user_id;

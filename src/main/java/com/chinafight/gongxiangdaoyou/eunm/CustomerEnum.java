@@ -14,6 +14,7 @@ public enum CustomerEnum {
     ERROR_STATUS("状态异常","500"),
     ERROR_ADMIN_EXIST("用户已存在","500"),
     ERROR_LOGIN("登陆失败","500"),
+    ERROR_TAGS_EXIT("标签已存在","500"),
     ERROR_NULL_POINT("参数存在空值","500"),
     ERROR_NULL_USER("该用户不存在","500"),
     ERROR_ADMIN_FREEZE("该用户已被冻结","500"),
