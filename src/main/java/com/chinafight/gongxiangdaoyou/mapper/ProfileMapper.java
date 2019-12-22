@@ -13,8 +13,11 @@ import java.util.List;
 @Repository
 public interface ProfileMapper {
     @Update("update profile set profile_tag=#{profile_tag},profile_text=#{profile_text}" +
-            ",profile_type=#{profile_type},profile_parentid=#{profile_parentId} where profile_id=#{profile_id}")
+            " where profile_parentid=#{profile_parentId} and profile_type=#{profile_type}")
     void updateProfile(ProfileModel profileModel);
+
+    @Update("update profile set profile_tag=#{userTags} where profile_parent=#{userId} and profile_type=#{type}")
+    void  updateTags(String userTags,Integer userId,Integer type);
 
     @Insert("insert into profile(profile_tag,profile_text,profile_type,profile_parentid)" +
             "values(#{profile_tag},#{profile_text},#{profile_type},#{profile_parentId})")
@@ -25,4 +28,7 @@ public interface ProfileMapper {
 
     @Select("select * from profile where profile_parentid=#{guideId} and profile_type=2")
     ProfileModel getGuideProfile(Integer guideId);
+
+    @Update("update profile set profile_text=#{text} where profile_parentid=#{userId} and profile_type=#{type}")
+    void updateText(String text,Integer userId,Integer type);
 }

@@ -1,4 +1,4 @@
-package com.chinafight.gongxiangdaoyou.service;
+package com.chinafight.gongxiangdaoyou.service.profile;
 
 import com.chinafight.gongxiangdaoyou.eunm.CustomerEnum;
 import com.chinafight.gongxiangdaoyou.mapper.GuideMapper;
@@ -65,20 +65,48 @@ public class ProfileService {
     public Object insertProfile(String userTags,String userText,Integer type,Integer userId){
         UserModel userModel = new UserModel();
         GuideModel guideModel=new GuideModel();
-        userModel.setUser_id(userId);
-        guideModel.setGuide_id(userId);
-        if(userMapper.getUserById(userModel)==null || guideMapper.getGuideById(guideModel)==null){
-            return CustomerEnum.ERROR_NULL_USER.getMsgMap();
-        }
-        if(profileMapper.getGuideProfile(userId)!=null || profileMapper.getUserProfile(userId)!=null){
-            return CustomerEnum.ERROR_TAGS_EXIT.getMsgMap();
-        }
         ProfileModel profileModel = new ProfileModel();
         profileModel.setProfile_parentId(userId);
         profileModel.setProfile_tag(userTags);
         profileModel.setProfile_text(userText);
         profileModel.setProfile_type(type);
+        userModel.setUser_id(userId);
+        guideModel.setGuide_id(userId);
+        if (type==1){
+            if (userMapper.getUserById(userModel)==null){
+                return CustomerEnum.ERROR_NULL_USER.getMsgMap();
+            }
+        }else if (type==2){
+            if (guideMapper.getGuideById(guideModel)==null){
+                return CustomerEnum.ERROR_NULL_USER.getMsgMap();
+            }
+        }
+        //如果数据库中已存在标签，则更新
+        if(profileMapper.getGuideProfile(userId)!=null || profileMapper.getUserProfile(userId)!=null){
+            profileMapper.updateProfile(profileModel);
+            return CustomerEnum.NORMAL_ADMIN_UPDATE.getMsgMap();
+        }
         profileMapper.insertProfile(profileModel);
         return CustomerEnum.NORMAL_ADMIN_INSERT.getMsgMap();
+    }
+
+    public Object updateText(Integer userId,String text,Integer type){
+        UserModel userModel = new UserModel();
+        GuideModel guideModel = new GuideModel();
+        guideModel.setGuide_id(userId);
+        userModel.setUser_id(userId);
+        if(userMapper.getUserById(userModel)==null || guideMapper.getGuideById(guideModel)==null){
+            return CustomerEnum.ERROR_NULL_USER.getMsgMap();
+        }
+        profileMapper.updateText(text,userId,type);
+        return CustomerEnum.NORMAL_ADMIN_UPDATE.getMsgMap();
+    }
+
+    public Object updateTags(Integer userId,String tags,Integer type){
+        UserModel user = userMapper.findUserById(userId);
+        if (user==null){
+            return null;
+        }
+        return null;
     }
 }

@@ -3,8 +3,8 @@ package com.chinafight.gongxiangdaoyou.controller;
 import com.chinafight.gongxiangdaoyou.eunm.CustomerEnum;
 import com.chinafight.gongxiangdaoyou.mapper.GuideMapper;
 import com.chinafight.gongxiangdaoyou.model.GuideModel;
-import com.chinafight.gongxiangdaoyou.service.GuideService;
-import com.chinafight.gongxiangdaoyou.service.ProfileService;
+import com.chinafight.gongxiangdaoyou.service.profile.GuideService;
+import com.chinafight.gongxiangdaoyou.service.profile.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RestController
@@ -21,7 +20,6 @@ public class GuideController {
     GuideMapper guideMapper;
     @Autowired
     GuideService guideService;
-
     @Autowired
     ProfileService profileService;
 

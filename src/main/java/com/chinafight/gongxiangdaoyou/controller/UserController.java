@@ -4,8 +4,8 @@ import com.chinafight.gongxiangdaoyou.eunm.CustomerEnum;
 import com.chinafight.gongxiangdaoyou.mapper.ProfileMapper;
 import com.chinafight.gongxiangdaoyou.mapper.UserMapper;
 import com.chinafight.gongxiangdaoyou.model.UserModel;
-import com.chinafight.gongxiangdaoyou.service.ProfileService;
-import com.chinafight.gongxiangdaoyou.service.UserService;
+import com.chinafight.gongxiangdaoyou.service.profile.ProfileService;
+import com.chinafight.gongxiangdaoyou.service.profile.UserService;
 import com.chinafight.gongxiangdaoyou.socket.WebSocketServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 
 
 @Controller

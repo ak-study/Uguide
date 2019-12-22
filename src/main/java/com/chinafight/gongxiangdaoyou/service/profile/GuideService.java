@@ -1,4 +1,4 @@
-package com.chinafight.gongxiangdaoyou.service;
+package com.chinafight.gongxiangdaoyou.service.profile;
 
 import com.chinafight.gongxiangdaoyou.eunm.CustomerEnum;
 import com.chinafight.gongxiangdaoyou.mapper.GuideMapper;

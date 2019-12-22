@@ -18,9 +18,12 @@ public enum CustomerEnum {
     ERROR_NULL_POINT("参数存在空值","500"),
     ERROR_NULL_USER("该用户不存在","500"),
     ERROR_ADMIN_FREEZE("该用户已被冻结","500"),
+    ERROR_USER_LOGIN("用户未登录","500"),
     ERROR_EXCEPTION_USERNAME("用户名参数非法","501"),
     ERROR_EXCEPTION_PASSWORD("密码参数非法","502"),
     ERROR_EXCEPTION_PHONE("电话填写错误","503"),
+    ERROR_TITLE_NULL("标题不能为空","504"),
+    ERROR_TEXT_NULL("问题描述不能为空","505"),
     ERROR_EXCEPTION_EXIST("该用户名已被注册","504")
     ;
 
