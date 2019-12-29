@@ -34,6 +34,9 @@ public interface UserMapper {
             "user_card=#{user_card},user_phone=#{user_phone},user_truename=#{user_trueName} where user_id=#{user_id}")
     void updateUser(UserModel userModel);
 
+    @Update("update user set user_password=#{password} where user_id=#{userId}")
+    void updatePassWordById(String password,Integer userId);
+
     @Select("select * from user where user_name regexp #{userName}")
     List<UserModel> searchUserByUserName(String userName);
 
