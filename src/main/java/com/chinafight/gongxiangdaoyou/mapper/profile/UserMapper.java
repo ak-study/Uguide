@@ -1,7 +1,6 @@
-package com.chinafight.gongxiangdaoyou.mapper;
+package com.chinafight.gongxiangdaoyou.mapper.profile;
 
-import com.chinafight.gongxiangdaoyou.model.ProfileModel;
-import com.chinafight.gongxiangdaoyou.model.UserModel;
+import com.chinafight.gongxiangdaoyou.model.profile.UserModel;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 

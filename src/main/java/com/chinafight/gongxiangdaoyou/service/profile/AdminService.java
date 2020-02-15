@@ -1,8 +1,8 @@
-package com.chinafight.gongxiangdaoyou.service;
+package com.chinafight.gongxiangdaoyou.service.profile;
 
 import com.chinafight.gongxiangdaoyou.eunm.CustomerEnum;
-import com.chinafight.gongxiangdaoyou.mapper.AdminMapper;
-import com.chinafight.gongxiangdaoyou.model.AdminModel;
+import com.chinafight.gongxiangdaoyou.mapper.profile.AdminMapper;
+import com.chinafight.gongxiangdaoyou.model.profile.AdminModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ public class AdminService {
      * 更新管理员，传入id，用户名，密码
      *
      * @param adminModel
-     * @return
+     * @return 更新管理员
      */
     public Object updateAdmin(AdminModel adminModel) {
         AdminModel admin = adminMapper.selectAdminById(adminModel.getId());
@@ -28,7 +28,7 @@ public class AdminService {
             return CustomerEnum.ERROR_NULL_USER.getMsgMap();
         }
         adminMapper.updateAdmin(adminModel);
-        return CustomerEnum.NORMAL_ADMIN_UPDATE.getMsgMap();
+        return CustomerEnum.NORMAL_USER_UPDATE.getMsgMap();
     }
 
     /**
@@ -44,7 +44,7 @@ public class AdminService {
             return CustomerEnum.ERROR_NULL_USER.getMsgMap();
         }
         adminMapper.deleteAdminById(id);
-        return CustomerEnum.NORMAL_ADMIN_DELETE.getMsgMap();
+        return CustomerEnum.NORMAL_USER_DELETE.getMsgMap();
 
     }
 
@@ -62,12 +62,12 @@ public class AdminService {
         }
         AdminModel admin = adminMapper.selectAdminByUserName(adminModel);
         if (admin != null) {
-            return CustomerEnum.ERROR_ADMIN_EXIST.getMsgMap();
+            return CustomerEnum.ERROR_USER_EXIST.getMsgMap();
         }
         adminModel.setCreate_time(System.currentTimeMillis());
         adminModel.setStatus("正常");
         adminMapper.insertAdmin(adminModel);
-        return CustomerEnum.NORMAL_ADMIN_INSERT.getMsgMap();
+        return CustomerEnum.NORMAL_USER_INSERT.getMsgMap();
     }
 
     /**
@@ -99,7 +99,7 @@ public class AdminService {
         if (loginAdmin != null) {
             request.getSession().setAttribute(adminModel.getUserName(),admin);
             map.put("token",token);
-            map.put("status", CustomerEnum.NORMAL_ADMIN_LOGIN.getMsgMap());
+            map.put("status", CustomerEnum.NORMAL_USER_LOGIN.getMsgMap());
             map.put("power",admin.getPower());
             return map;
         }

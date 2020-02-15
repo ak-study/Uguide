@@ -1,18 +1,18 @@
 package com.chinafight.gongxiangdaoyou.dto;
 
-import com.chinafight.gongxiangdaoyou.model.UserModel;
+import com.chinafight.gongxiangdaoyou.model.profile.UserModel;
 
 public class CommentDTO {
     private String content;
     private Long parent_id;
-    private Integer type;
-    private Long id;
+//    private Long id;
     private Long commentator;
     private Long gmt_create;
     private Long gmt_modified;
     private Long like_count;
-    private Integer comment_count;
+//    private Integer comment_count;
     private UserModel user;
+
 
     public String getContent() {
         return content;
@@ -30,22 +30,14 @@ public class CommentDTO {
         this.parent_id = parent_id;
     }
 
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
+//    public Long getId() {
+//        return id;
+//    }
+//
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
+//
     public Long getCommentator() {
         return commentator;
     }
@@ -78,13 +70,13 @@ public class CommentDTO {
         this.like_count = like_count;
     }
 
-    public Integer getComment_count() {
-        return comment_count;
-    }
-
-    public void setComment_count(Integer comment_count) {
-        this.comment_count = comment_count;
-    }
+//    public Integer getComment_count() {
+//        return comment_count;
+//    }
+//
+//    public void setComment_count(Integer comment_count) {
+//        this.comment_count = comment_count;
+//    }
 
     public UserModel getUser() {
         return user;

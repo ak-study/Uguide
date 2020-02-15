@@ -34,6 +34,12 @@ public interface QuestionMapper {
     @Update("update question set comment_count=comment_count+1 where id =#{id}")
     void incCommentCount(Long id);
 
+    @Update("update question set like_count=like_count+1 where id =#{id}")
+    void incQuestionLike(Long id);
+
+    @Update("update question set tag=#{tags} where id =#{id}")
+    void updateTags(String tags,Long id);
+
     @Update("update question set comment_count=comment_count-1 where id =#{id}")
     void downCommentCount(Long id);
 
@@ -45,4 +51,6 @@ public interface QuestionMapper {
 
     @Select("select * from question where tag regexp #{tag}")
     List<Question> selectRelatedFromTag(String regexpSearch);
+
+
 }

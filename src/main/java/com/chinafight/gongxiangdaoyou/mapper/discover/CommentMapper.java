@@ -9,8 +9,8 @@ import java.util.List;
 @Repository
 @Mapper
 public interface CommentMapper {
-    @Insert("insert into comment(id,parent_id,type,commentator,gmt_create,gmt_modified,like_count,content) " +
-            "values(#{id},#{parent_id},#{type},#{commentator},#{gmt_create},#{gmt_modified},#{like_count},#{content})")
+    @Insert("insert into comment(parent_id,commentator,gmt_create,gmt_modified,like_count,content) " +
+            "values(#{parent_id},#{commentator},#{gmt_create},#{gmt_modified},#{like_count},#{content})")
     void insertComment(Comment comment);
 
     @Select("select * from comment")
@@ -27,5 +27,8 @@ public interface CommentMapper {
 
     @Update("update comment set comment_count=comment_count-1 where id =#{id}")
     void downCommentCount(Long id);
+
+    @Select("select * from comment where parent_id=#{questionId}")
+    List<Comment> gerCommentsByQuestionId(Long questionId);
 }
 

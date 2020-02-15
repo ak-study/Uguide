@@ -1,21 +1,25 @@
 package com.chinafight.gongxiangdaoyou.controller;
 
 import com.chinafight.gongxiangdaoyou.eunm.CustomerEnum;
-import com.chinafight.gongxiangdaoyou.mapper.ProfileMapper;
-import com.chinafight.gongxiangdaoyou.mapper.UserMapper;
-import com.chinafight.gongxiangdaoyou.model.UserModel;
+import com.chinafight.gongxiangdaoyou.mapper.profile.ProfileMapper;
+import com.chinafight.gongxiangdaoyou.mapper.profile.UserMapper;
+import com.chinafight.gongxiangdaoyou.model.profile.UserModel;
 import com.chinafight.gongxiangdaoyou.service.profile.ProfileService;
 import com.chinafight.gongxiangdaoyou.service.profile.UserService;
 import com.chinafight.gongxiangdaoyou.socket.WebSocketServer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Objects;
 
 
 @Controller
@@ -65,7 +69,7 @@ public class UserController {
         Object user = userService.searchUser(userName);
         if(user!=null){
             map.put("data",user);
-            map.put("status", CustomerEnum.NORMAL_ADMIN_SELECT.getMsgMap());
+            map.put("status", CustomerEnum.NORMAL_USER_SELECT.getMsgMap());
             return map;
         }
         return CustomerEnum.ERROR_NULL_USER.getMsgMap();
@@ -120,5 +124,18 @@ public class UserController {
         map.put("data",user);
         map.put("profile",userProfile);
         return map;
+    }
+
+    @PostMapping("updateUserPassWord")
+    public Object updateUserPassWord(String newPassWord,Integer userId,String oldPassWord){
+        return userService.updateUserPassWord(userId,newPassWord,oldPassWord);
+    }
+
+    @PostMapping("updateUserByAdmin")
+    public Object updateUserToAdmin(@Valid UserModel userModel, BindingResult result){
+        if (result.hasErrors()){
+            return Objects.requireNonNull(result.getFieldError()).getDefaultMessage();
+        }
+        return userService.updateUserToAdmin(userModel);
     }
 }

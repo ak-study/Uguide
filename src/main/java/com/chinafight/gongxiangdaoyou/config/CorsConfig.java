@@ -1,4 +1,4 @@
-package com.chinafight.gongxiangdaoyou.comfig;
+package com.chinafight.gongxiangdaoyou.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

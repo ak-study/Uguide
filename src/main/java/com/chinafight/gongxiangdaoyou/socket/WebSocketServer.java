@@ -1,8 +1,11 @@
 package com.chinafight.gongxiangdaoyou.socket;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArraySet;
-import java.util.logging.Logger;
 
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -12,8 +15,10 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
+import com.chinafight.gongxiangdaoyou.dto.OrderByGuide;
 import com.chinafight.gongxiangdaoyou.eunm.CustomerEnum;
-import com.chinafight.gongxiangdaoyou.model.UserModel;
+import com.chinafight.gongxiangdaoyou.model.profile.GuideModel;
+import com.chinafight.gongxiangdaoyou.model.profile.UserModel;
 import com.chinafight.gongxiangdaoyou.utils.Utils;
 import org.springframework.stereotype.Component;
 
@@ -74,11 +79,6 @@ public class WebSocketServer {
         }
     }
 
-    /**
-     *
-     * @param session
-     * @param error
-     */
     @OnError
     public void onError(Session session, Throwable error) {
         System.out.println("发生错误");

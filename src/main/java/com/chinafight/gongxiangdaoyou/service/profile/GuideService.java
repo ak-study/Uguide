@@ -1,16 +1,15 @@
 package com.chinafight.gongxiangdaoyou.service.profile;
 
 import com.chinafight.gongxiangdaoyou.eunm.CustomerEnum;
-import com.chinafight.gongxiangdaoyou.mapper.GuideMapper;
-import com.chinafight.gongxiangdaoyou.model.GuideModel;
+import com.chinafight.gongxiangdaoyou.mapper.profile.GuideMapper;
+import com.chinafight.gongxiangdaoyou.model.profile.GuideModel;
 import com.chinafight.gongxiangdaoyou.utils.CustomerUtils;
 import com.chinafight.gongxiangdaoyou.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class GuideService {
@@ -26,13 +25,13 @@ public class GuideService {
         GuideModel guideModel = new GuideModel();
         guideModel.setGuide_id(guideId);
         guideMapper.deleteGuideById(guideModel);
-        return CustomerEnum.NORMAL_ADMIN_DELETE.getMsgMap();
+        return CustomerEnum.NORMAL_USER_DELETE.getMsgMap();
     }
 
     public Object insertGuide(String guideName,String guidePhone,
                               String guidePassWord,String guideTrueName){
         HashMap<Object, Object> paraMsg = Utils.isTrue(guideName, guidePassWord, guidePhone);
-        if (paraMsg.size()>0){
+        if (paraMsg!=null){
             return paraMsg;
         }
         HashMap<Object, Object> map = new HashMap<>();
@@ -41,7 +40,7 @@ public class GuideService {
         guide.setGuide_name(guideName);
         GuideModel tempGuide = guideMapper.getGuideByUserName(guide);
         if(tempGuide!=null){
-            map.put("status",CustomerEnum.ERROR_ADMIN_EXIST.getMsgMap());
+            map.put("status",CustomerEnum.ERROR_USER_EXIST.getMsgMap());
             return map;
         }
         //默认值
@@ -58,7 +57,7 @@ public class GuideService {
         guide.setGuide_trueName(guideTrueName);
         guideMapper.insertGuide(guide);
         GuideModel temp = guideMapper.getGuideByUserName(guide);
-        map.put("status",CustomerEnum.NORMAL_ADMIN_INSERT.getMsgMap());
+        map.put("status",CustomerEnum.NORMAL_USER_INSERT.getMsgMap());
         map.put("data",temp);
         return map;
     }
@@ -80,7 +79,7 @@ public class GuideService {
         if(guideModel!=null){
             HashMap<Object, Object> login = CustomerUtils.login(null, guideModel);
             if(login==null){
-                map.put("status",CustomerEnum.ERROR_ADMIN_FREEZE.getMsgMap());
+                map.put("status",CustomerEnum.ERROR_USER_FREEZE.getMsgMap());
             }else if(login.size()>0){
                 return login;
             }
@@ -120,7 +119,7 @@ public class GuideService {
         guide.setGuide_card(guideCard);
         guide.setGuide_phone(guidePhone);
         guideMapper.updateGuide(guide);
-        return CustomerEnum.NORMAL_ADMIN_UPDATE.getMsgMap();
+        return CustomerEnum.NORMAL_USER_UPDATE.getMsgMap();
     }
 
     public Object updateGuideAvatar(String guideAvatar,Integer guideId){
@@ -131,6 +130,32 @@ public class GuideService {
             return CustomerEnum.ERROR_NULL_USER.getMsgMap();
         }
         guideMapper.updateGuideAvatar(guideAvatar,guideId);
-        return CustomerEnum.NORMAL_ADMIN_UPDATE.getMsgMap();
+        return CustomerEnum.NORMAL_USER_UPDATE.getMsgMap();
+    }
+
+    public Object goodGuide(){
+        List<GuideModel> guideList = guideMapper.getGuideList();
+        HashMap<Object, Object> map = new HashMap<>();
+        Collections.sort(guideList);
+        List<GuideModel> tarGuideList=new ArrayList<>();
+        int count=1;
+        for (GuideModel guideModel : guideList) {
+            if (count>6){
+                break;
+            }
+            tarGuideList.add(guideModel);
+            count++;
+        }
+        map.put("data",tarGuideList);
+        map.put("status",CustomerEnum.NORMAL_USER_SELECT.getMsgMap());
+        return map;
+    }
+
+    public Object updateGuideByAdmin(GuideModel guideModel){
+        guideMapper.updateGuide(guideModel);
+        guideMapper.updateGuideAvatar(guideModel.getGuide_avatar(),guideModel.getGuide_id());
+        guideMapper.updateGuidePassword(guideModel);
+        return CustomerEnum.NORMAL_STATUS.getMsgMap();
+
     }
 }

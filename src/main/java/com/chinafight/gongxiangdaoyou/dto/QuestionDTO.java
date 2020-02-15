@@ -1,7 +1,9 @@
 package com.chinafight.gongxiangdaoyou.dto;
 
-import com.chinafight.gongxiangdaoyou.model.UserModel;
-import org.apache.catalina.User;
+import com.chinafight.gongxiangdaoyou.model.ImgModel;
+import com.chinafight.gongxiangdaoyou.model.profile.UserModel;
+
+import java.util.List;
 
 public class QuestionDTO {
     private Long id;
@@ -14,6 +16,7 @@ public class QuestionDTO {
     private Integer likeCount;
     private String tag;
     private String description;
+    private List<ImgModel> imgList;
     private UserModel userModel;
 
     public UserModel getUserModel() {
@@ -39,6 +42,14 @@ public class QuestionDTO {
                 ", description='" + description + '\'' +
                 ", user=" + userModel +
                 '}';
+    }
+
+    public List<ImgModel> getImgList() {
+        return imgList;
+    }
+
+    public void setImgList(List<ImgModel> imgList) {
+        this.imgList = imgList;
     }
 
     public Long getId() {

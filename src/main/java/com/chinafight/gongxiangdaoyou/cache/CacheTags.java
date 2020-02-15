@@ -15,7 +15,6 @@ public class CacheTags {
             tags1.setTags(Arrays.asList("熟悉当地","会开车","会拍照","会急救",
                     "喜欢自驾","会潜水","会攀岩"));
             tags.add(tags1);
-
             tags2.setTypeName("气质");
             tags2.setTags(Arrays.asList("热情","善良","聪明","担当","阳光",
                     "爱笑","洒脱","沉稳","开朗","开放","豁达"));

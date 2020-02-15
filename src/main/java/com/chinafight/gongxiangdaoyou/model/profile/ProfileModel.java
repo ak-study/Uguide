@@ -1,4 +1,4 @@
-package com.chinafight.gongxiangdaoyou.model;
+package com.chinafight.gongxiangdaoyou.model.profile;
 
 public class ProfileModel {
     private Integer profile_id;

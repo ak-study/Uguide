@@ -3,7 +3,6 @@ package com.chinafight.gongxiangdaoyou.model.discover;
 public class Comment {
     private Long id;
     private Long parent_id;
-    private Integer type;
     private Long commentator;
     private Long gmt_create;
     private Long gmt_modified;
@@ -25,14 +24,6 @@ public class Comment {
 
     public void setParent_id(Long parent_id) {
         this.parent_id = parent_id;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
     }
 
     public Long getCommentator() {

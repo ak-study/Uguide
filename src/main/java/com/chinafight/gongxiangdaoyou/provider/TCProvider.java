@@ -6,6 +6,7 @@ import com.qcloud.cos.auth.BasicCOSCredentials;
 import com.qcloud.cos.auth.COSCredentials;
 import com.qcloud.cos.exception.CosClientException;
 import com.qcloud.cos.exception.CosServiceException;
+import com.qcloud.cos.model.GeneratePresignedUrlRequest;
 import com.qcloud.cos.model.ObjectMetadata;
 import com.qcloud.cos.model.PutObjectResult;
 import com.qcloud.cos.region.Region;
@@ -27,6 +28,7 @@ public class TCProvider {
 
     public URL upLoad(File file) {
         String fileName = file.getName();
+        Date expiration = new Date(System.currentTimeMillis() + 3600L * 1000 * 24 * 365 * 10);
         URL url = null;
         COSCredentials cred = new BasicCOSCredentials(secretId, secretKey);
         Region region = new Region("ap-guangzhou");
@@ -40,15 +42,16 @@ public class TCProvider {
             //获取文件下载地址
             if (putObjectResult!=null){
                 String key="/"+newFileName;
-                url = cosClient.generatePresignedUrl(bucketName, key, new Date(new Date().getTime() + 5 * 60 * 10000 * 300));
+                url = cosClient.generatePresignedUrl(bucketName, key, expiration);
             }
-        } catch (CosServiceException serverException) {
+        } catch (CosClientException serverException) {
             serverException.printStackTrace();
-            return null;
-        } catch (CosClientException clientException) {
-            clientException.printStackTrace();
             return null;
         }
         return url;
+    }
+
+    public void deleteObject(){
+
     }
 }

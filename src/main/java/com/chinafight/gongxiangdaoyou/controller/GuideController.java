@@ -1,8 +1,8 @@
 package com.chinafight.gongxiangdaoyou.controller;
 
 import com.chinafight.gongxiangdaoyou.eunm.CustomerEnum;
-import com.chinafight.gongxiangdaoyou.mapper.GuideMapper;
-import com.chinafight.gongxiangdaoyou.model.GuideModel;
+import com.chinafight.gongxiangdaoyou.mapper.profile.GuideMapper;
+import com.chinafight.gongxiangdaoyou.model.profile.GuideModel;
 import com.chinafight.gongxiangdaoyou.service.profile.GuideService;
 import com.chinafight.gongxiangdaoyou.service.profile.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +52,7 @@ public class GuideController {
         List<GuideModel> guideList = guideService.searchGuideByName(guideName);
         if (guideList.size()>0){
             map.put("data",guideList);
-            map.put("status",CustomerEnum.NORMAL_ADMIN_SELECT.getMsgMap());
+            map.put("status",CustomerEnum.NORMAL_USER_SELECT.getMsgMap());
             return map;
         }
         map.put("status",CustomerEnum.ERROR_NULL_USER.getMsgMap());
@@ -98,5 +98,15 @@ public class GuideController {
         map.put("profile", guideProfile);
         map.put("status", CustomerEnum.NORMAL_STATUS.getMsgMap());
         return map;
+    }
+
+    @GetMapping("getGoodGuide")
+    public Object getGoodGuide(){
+       return guideService.goodGuide();
+    }
+
+    @PostMapping("updateGuideByAdmin")
+    public Object updateGuideByAdmin(GuideModel guideModel){
+        return guideService.updateGuideByAdmin(guideModel);
     }
 }

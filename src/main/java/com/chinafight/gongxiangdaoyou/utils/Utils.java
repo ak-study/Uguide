@@ -1,20 +1,24 @@
 package com.chinafight.gongxiangdaoyou.utils;
 
 import com.chinafight.gongxiangdaoyou.eunm.CustomerEnum;
-import com.chinafight.gongxiangdaoyou.model.GuideModel;
-import com.chinafight.gongxiangdaoyou.model.UserModel;
+import com.chinafight.gongxiangdaoyou.model.profile.GuideModel;
+import com.chinafight.gongxiangdaoyou.model.profile.UserModel;
+import com.chinafight.gongxiangdaoyou.provider.TCProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
 import java.util.HashMap;
 
 public class Utils {
-    public static final HashMap<String, UserModel> userLoginMap=new HashMap<>();
-    public static final HashMap<String, GuideModel> guideLoginMap=new HashMap<>();
+    TCProvider tcProvider = new TCProvider();
+    public static final HashMap<String, UserModel> userLoginMap = new HashMap<>();
+    public static final HashMap<String, GuideModel> guideLoginMap = new HashMap<>();
 
-    public static boolean deleteFile(String pathname){
+    public static boolean deleteFile(String pathname) {
         boolean result = false;
         File file = new File(pathname);
         if (file.exists()) {
@@ -24,23 +28,25 @@ public class Utils {
         return result;
     }
 
-    public static HashMap<Object, Object> isTrue(String userName,String password,String phone){
+    public static HashMap<Object, Object> isTrue(String userName, String password, String phone) {
         HashMap<Object, Object> map = new HashMap<>();
-        boolean passWordMatches = password.matches(".*[a-zA-Z]+.*");
-        if(!passWordMatches || password.length()<6 || password.length()>14){
-            map.put("status",CustomerEnum.ERROR_EXCEPTION_PASSWORD.getMsgMap());
-            return map;
+        if (password != null) {
+            boolean passWordMatches = password.matches(".*[a-zA-Z]+.*");
+            if (!passWordMatches || password.length() < 6 || password.length() > 14) {
+                map.put("status", CustomerEnum.ERROR_EXCEPTION_PASSWORD.getMsgMap());
+                return map;
+            }
         }
         boolean phoneMatches = phone.matches("[0-9]{11}");
-        if(!phoneMatches){
-            map.put("status",CustomerEnum.ERROR_EXCEPTION_PHONE.getMsgMap());
+        if (!phoneMatches) {
+            map.put("status", CustomerEnum.ERROR_EXCEPTION_PHONE.getMsgMap());
             return map;
         }
-        if(userName!=null && (userName.length()<6|| userName.length()>14)){
-            map.put("status",CustomerEnum.ERROR_EXCEPTION_USERNAME.getMsgMap());
+        if (userName != null && (userName.length() < 6 || userName.length() > 14)) {
+            map.put("status", CustomerEnum.ERROR_EXCEPTION_USERNAME.getMsgMap());
             return map;
         }
-        return map;
+        return null;
     }
 
     //获取流文件
@@ -65,4 +71,22 @@ public class Utils {
             del.delete();
         }
     }
+
+    public static boolean isTrueCard(String card) {
+        return card.matches("[0-9]{18}");
+    }
+
+    public static boolean isTruePhone(String phone) {
+        return phone.matches("[0-9]{11}");
+    }
+
+    public static boolean isTrueUserName(String userName) {
+        return userName.length() >= 6 && userName.length() <= 14;
+    }
+
+    public static boolean isTruePassWord(String passWord) {
+        boolean passWordMatches = passWord.matches(".*[a-zA-Z]+.*");
+        return passWordMatches && passWord.length() >= 6 && passWord.length() <= 14;
+    }
+
 }

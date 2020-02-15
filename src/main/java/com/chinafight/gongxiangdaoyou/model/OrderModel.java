@@ -1,6 +1,9 @@
 package com.chinafight.gongxiangdaoyou.model;
 
 
+import com.chinafight.gongxiangdaoyou.model.profile.GuideModel;
+import com.chinafight.gongxiangdaoyou.model.profile.UserModel;
+
 public class OrderModel {
     private Integer order_id;
     private Integer order_user;
@@ -8,6 +11,8 @@ public class OrderModel {
     private Float order_price;
     private String order_from;
     private String order_dst;
+    private GuideModel guideModel;
+    private UserModel userModel;
 
     @Override
     public String toString() {
@@ -19,6 +24,22 @@ public class OrderModel {
                 ", order_from='" + order_from + '\'' +
                 ", order_dst='" + order_dst + '\'' +
                 '}';
+    }
+
+    public GuideModel getGuideModel() {
+        return guideModel;
+    }
+
+    public void setGuideModel(GuideModel guideModel) {
+        this.guideModel = guideModel;
+    }
+
+    public UserModel getUserModel() {
+        return userModel;
+    }
+
+    public void setUserModel(UserModel userModel) {
+        this.userModel = userModel;
     }
 
     public Integer getOrder_id() {

@@ -1,6 +1,6 @@
 package com.chinafight.gongxiangdaoyou.filter;
 
-import com.chinafight.gongxiangdaoyou.service.IPService;
+import com.chinafight.gongxiangdaoyou.service.utils.IPService;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;

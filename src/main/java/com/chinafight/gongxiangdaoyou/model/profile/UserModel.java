@@ -1,6 +1,10 @@
-package com.chinafight.gongxiangdaoyou.model;
+package com.chinafight.gongxiangdaoyou.model.profile;
+
+import javax.validation.constraints.NotNull;
 
 public class UserModel {
+    @NotNull(message = "id不能为空" +
+            "")
     private Integer user_id;
     private String user_nick;
     private String user_name;
@@ -36,6 +40,7 @@ public class UserModel {
 
     @Override
     public String toString() {
+        super.toString();
         return "UserModel{" +
                 "user_id=" + user_id +
                 ", user_nick='" + user_nick + '\'' +

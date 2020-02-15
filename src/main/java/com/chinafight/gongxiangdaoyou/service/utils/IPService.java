@@ -1,4 +1,4 @@
-package com.chinafight.gongxiangdaoyou.service;
+package com.chinafight.gongxiangdaoyou.service.utils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,27 +25,21 @@ public class IPService {
         //如果IP是本地127.0.0.1或者内网IP192.168则status分别返回1和2
         String status = json.opt("status").toString();
         if(!"0".equals(status)){
-            return "内网访问";
+            return "福建";
         }
-        JSONObject content=((JSONObject) json).getJSONObject("content");              //获取json对象里的content对象
-        JSONObject addr_detail=((JSONObject) content).getJSONObject("address_detail");//从content对象里获取address_detail
-        String city=addr_detail.opt("city").toString();                             //获取市名，可以根据具体需求更改
-        return city;
+        JSONObject content=json.getJSONObject("content");              //获取json对象里的content对象
+        JSONObject addr_detail=content.getJSONObject("address_detail");//从content对象里获取address_detail
+        return addr_detail.opt("city").toString();
     }
 
-    public static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
-        InputStream is = null;
-        try {
-            is = new URL(url).openStream();
+    private static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
+        try (InputStream is = new URL(url).openStream()) {
             BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));//Charset.forName("UTF-8")
             String jsonText = readAll(rd);
-            JSONObject json = new JSONObject(jsonText);
             // System.out.println(json);
-            return json;
-        } finally {
-            //关闭输入流
-            is.close();
+            return new JSONObject(jsonText);
         }
+        //关闭输入流
     }
 
     private static String readAll(Reader rd) throws IOException {

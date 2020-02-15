@@ -1,6 +1,6 @@
 package com.chinafight.gongxiangdaoyou.model;
 
-public class Img {
+public class ImgModel {
     private Integer img_id;
     private Integer img_type;
     private String img;

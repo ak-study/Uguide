@@ -1,4 +1,4 @@
-package com.chinafight.gongxiangdaoyou.model;
+package com.chinafight.gongxiangdaoyou.model.profile;
 
 import java.util.Date;
 

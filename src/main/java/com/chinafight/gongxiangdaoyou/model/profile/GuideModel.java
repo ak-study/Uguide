@@ -1,6 +1,6 @@
-package com.chinafight.gongxiangdaoyou.model;
+package com.chinafight.gongxiangdaoyou.model.profile;
 
-public class GuideModel {
+public class GuideModel implements Comparable<GuideModel>{
     private Integer guide_id;
     private Integer guide_lv;
     private String guide_name;
@@ -61,6 +61,10 @@ public class GuideModel {
                 ", guide_vip=" + guide_vip +
                 ", guide_power=" + guide_power +
                 '}';
+    }
+
+    private Integer score(){
+        return this.guide_like+ this.guide_vip*100;
     }
 
     public Integer getGuide_id() {
@@ -141,5 +145,10 @@ public class GuideModel {
 
     public void setGuide_power(Integer guide_power) {
         this.guide_power = guide_power;
+    }
+
+    @Override
+    public int compareTo(GuideModel guideModel) {
+        return guideModel.score()-this.score();
     }
 }

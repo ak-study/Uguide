@@ -1,6 +1,6 @@
-package com.chinafight.gongxiangdaoyou.mapper;
+package com.chinafight.gongxiangdaoyou.mapper.profile;
 
-import com.chinafight.gongxiangdaoyou.model.GuideModel;
+import com.chinafight.gongxiangdaoyou.model.profile.GuideModel;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -40,5 +40,8 @@ public interface  GuideMapper {
 
     @Update("update guide set guide_avatar=#{guide_avatar} where guide_id=#{guide_id}")
     void  updateGuideAvatar(String guide_avatar,Integer guide_id);
+
+    @Update("update guide set guide_password=#{guide_password} where guide_id=#{guide_id}")
+    void updateGuidePassword(GuideModel guideModel);
 
 }

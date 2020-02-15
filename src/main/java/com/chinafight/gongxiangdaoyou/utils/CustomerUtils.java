@@ -1,16 +1,11 @@
 package com.chinafight.gongxiangdaoyou.utils;
 
 import com.chinafight.gongxiangdaoyou.eunm.CustomerEnum;
-import com.chinafight.gongxiangdaoyou.mapper.GuideMapper;
-import com.chinafight.gongxiangdaoyou.mapper.UserMapper;
-import com.chinafight.gongxiangdaoyou.model.GuideModel;
-import com.chinafight.gongxiangdaoyou.model.UserModel;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.chinafight.gongxiangdaoyou.model.profile.GuideModel;
+import com.chinafight.gongxiangdaoyou.model.profile.UserModel;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -25,7 +20,7 @@ public class CustomerUtils {
             }
             map.put("token",token);
             map.put("data",userModel);
-            map.put("status",CustomerEnum.NORMAL_ADMIN_LOGIN.getMsgMap());
+            map.put("status",CustomerEnum.NORMAL_USER_LOGIN.getMsgMap());
             Utils.userLoginMap.put(userModel.getUser_name(),userModel);
             return map;
         }
@@ -35,7 +30,7 @@ public class CustomerUtils {
             }
             map.put("token",token);
             map.put("data",guideModel);
-            map.put("status",CustomerEnum.NORMAL_ADMIN_LOGIN.getMsgMap());
+            map.put("status",CustomerEnum.NORMAL_USER_LOGIN.getMsgMap());
             Utils.guideLoginMap.put(guideModel.getGuide_name(),guideModel);
         }
         return map;

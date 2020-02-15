@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 
@@ -17,7 +18,6 @@ import java.util.HashMap;
 public class QuestionController {
     @Autowired
     QuestionDTOService questionDTOService;
-
     @Autowired
     PublishService publishService;
     @GetMapping("getQuestionDTOs")
@@ -31,11 +31,11 @@ public class QuestionController {
     }
 
     @PostMapping("publishQuestion")
-    public Object publishQuestion(Long userId,String title,String text){
+    public Object publishQuestion(Long userId, String title, String text, MultipartFile[] file){
         Question question = new Question();
         question.setTitle(title);
         question.setDescription(text);
-        Object code = publishService.publishQuestion(question, userId);
+        Object code = publishService.publishQuestion(question, userId,file);
         if (code==null){
             return CustomerEnum.ERROR_STATUS.getMsgMap();
         }
@@ -50,4 +50,15 @@ public class QuestionController {
         }
         return questionById;
     }
+
+    @GetMapping("incQuestionLike")
+    public Object incQuestionLike(Long questionId){
+        return questionDTOService.incQuestionLikes(questionId);
+    }
+
+    @GetMapping("updateTags")
+    public Object updateTags(String tags,Long questionId){
+        return questionDTOService.insertTags(tags,questionId);
+    }
+
 }

@@ -1,9 +1,9 @@
 package com.chinafight.gongxiangdaoyou.controller;
 
 import com.chinafight.gongxiangdaoyou.eunm.CustomerEnum;
-import com.chinafight.gongxiangdaoyou.mapper.AdminMapper;
-import com.chinafight.gongxiangdaoyou.model.AdminModel;
-import com.chinafight.gongxiangdaoyou.service.AdminService;
+import com.chinafight.gongxiangdaoyou.mapper.profile.AdminMapper;
+import com.chinafight.gongxiangdaoyou.model.profile.AdminModel;
+import com.chinafight.gongxiangdaoyou.service.profile.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,7 +56,7 @@ public class AdminController {
         AdminModel admin = adminMapper.searchAdmin(adminModel);
         if (admin != null) {
             msgMap.put("admin", admin);
-            msgMap.put("status", CustomerEnum.NORMAL_ADMIN_SELECT.getMsgMap());
+            msgMap.put("status", CustomerEnum.NORMAL_USER_SELECT.getMsgMap());
             return msgMap;
         }
         msgMap.put("status", CustomerEnum.ERROR_NULL_USER.getMsgMap());
