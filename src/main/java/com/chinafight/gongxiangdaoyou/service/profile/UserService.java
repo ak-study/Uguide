@@ -142,7 +142,7 @@ public class UserService {
     }
 
     public Object userLogin(String userName, String userPassWord, HttpServletRequest request){
-        UserModel userModel = userMapper.userLogin(userName, userPassWord);
+        UserModel userModel = userMapper.userLogin(userName, userPassWord);//判断账户密码是否正确
         HashMap<Object, Object> map = new HashMap<>();
         if(userModel!=null){
             HashMap<Object, Object> login = CustomerUtils.login(userModel, null);

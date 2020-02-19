@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>WebSocket示例</title>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport' />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body>
+<input id="text" type="text"/>
+<button onclick="sentMessage()">发送消息</button>
+<hr/>
+<button onclick="close()">关闭连接</button>
+<hr/>
+</body>
+
+<script type="text/javascript">
+    var socket;
+    if (typeof (WebSocket) == "undefined") {
+      console.log("您的浏览器不支持WebSocket");
+    } else {
+      console.log("您的浏览器支持WebSocket");
+
+      socket = new WebSocket("ws://localhost:8082/websocket/1059");
+        //打开事件
+      socket.onopen = function () {
+        console.log("Socket 已打开");
+      };
+      //获得消息事件
+      socket.onmessage = function (msg) {
+        console.log(msg.data);
+        //发现消息进入    开始处理前端触发逻辑
+      };
+      //关闭事件
+      socket.onclose = function () {
+        console.log("Socket已关闭");
+      };
+      //发生了错误事件
+      socket.onerror = function () {
+        alert("Socket发生了错误");
+        //此时可以尝试刷新页面
+      };
+      sentMessage = function () {
+          var message = document.getElementById('text').value;
+          socket.send(message)
+      };
+      function close() {
+          socket.onclose(undefined);
+          console.log("Socket已关闭");
+      }
+    }
+</script>
+</html>

@@ -53,7 +53,7 @@
 
 
         <!-- 配置数据库中哪些表需要自动生成代码 -->
-        <table schema="root" tableName="notification111" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+        <table schema="root" tableName="guideorder111" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
             <generatedKey column="id" sqlStatement="Mysql" identity="true" />
         </table>
     </context>

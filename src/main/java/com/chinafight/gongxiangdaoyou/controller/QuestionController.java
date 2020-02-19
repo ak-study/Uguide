@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 
 @Controller
@@ -52,8 +54,8 @@ public class QuestionController {
     }
 
     @GetMapping("incQuestionLike")
-    public Object incQuestionLike(Long questionId){
-        return questionDTOService.incQuestionLikes(questionId);
+    public Object incQuestionLike(Long questionId, HttpServletRequest request, HttpServletResponse response){
+        return questionDTOService.incQuestionLikes(questionId,request,response);
     }
 
     @GetMapping("updateTags")

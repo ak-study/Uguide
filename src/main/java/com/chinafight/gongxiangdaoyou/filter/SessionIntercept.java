@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 
 @Component
 public class SessionIntercept implements HandlerInterceptor {
@@ -19,14 +20,12 @@ public class SessionIntercept implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String ipAddr = ipService.getIpAddr(request);
-        String city=null;
         try {
-            city=ipService.getAddrName(ipAddr);
-            request.getSession().setAttribute("city",city);
+            HashMap<Object, Object> cityMap = ipService.getAddrName(ipAddr);
+            request.getSession().setAttribute("city",cityMap.get("city"));
+            request.getSession().setAttribute("province",cityMap.get("province"));
             request.getSession().setAttribute("ip",ipAddr);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
         return true;

@@ -1,18 +1,21 @@
 package com.chinafight.gongxiangdaoyou.service.order;
 
-import com.chinafight.gongxiangdaoyou.eunm.CustomerEnum;
-import com.chinafight.gongxiangdaoyou.model.OrderModel;
+import com.chinafight.gongxiangdaoyou.dto.OrderDTO;
 import com.chinafight.gongxiangdaoyou.model.profile.GuideModel;
 import com.chinafight.gongxiangdaoyou.model.profile.UserModel;
 import com.chinafight.gongxiangdaoyou.service.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class OrderManger implements Order {
-    private OrderModel orderModel = new OrderModel();
+    private static List<String> opinionList=new ArrayList<>();
+    private static Map<Integer,OrderManger> orderMangerMap=new HashMap<>();
+    private OrderDTO orderDTO = new OrderDTO();
     private String curState;
     private Released released=new Released(this);
     private NotPay notPay=new NotPay(this);
@@ -20,38 +23,38 @@ public class OrderManger implements Order {
     private OrderFinish orderFinish=new OrderFinish(this);
     private OrderService orderService=new OrderService();
     public OrderManger(UserModel userModel) throws Exception {
-        orderModel.setUserModel(userModel);
+        orderDTO.setUserModel(userModel);
         this.setCurState(curState);
+        orderMangerMap.put(userModel.getUser_id(),this);
     }
 
     @Override
-    public void setOrderMessage(Float price, String from, String dst) throws Exception {
+    public void setOrderMessage(String price, String from, String dst) throws Exception {
         this.setCurState(released.curState());
-        this.orderModel.setOrder_price(price);
-        this.orderModel.setOrder_from(from);
-        this.orderModel.setOrder_dst(dst);
+        this.orderDTO.setOrderPrice(price);
+        this.orderDTO.setOrderFrom(from);
+        this.orderDTO.setOrderDst(dst);
     }
 
-    public Object orderReceive(GuideModel guideModel) throws Exception {
-        released.orderReceiving(guideModel);
-        return CustomerEnum.NORMAL_STATUS.getMsgMap();
+    public Object orderReceive(GuideModel guideModel, OrderDTO orderDTO) throws Exception {
+        orderDTO.setGuideModel(guideModel);
+        return released.orderReceiving(guideModel, orderDTO);
     }
 
-    public Object orderPay() throws Exception {
-        return notPay.pay();
+    public Object orderPay(OrderDTO orderDTO) throws Exception {
+        return notPay.pay(orderDTO);
     }
 
-    public Object orderFinish() throws Exception {
-        orderFinish.orderOver();
-        return CustomerEnum.NORMAL_STATUS.getMsgMap();
+    public Object orderFinish(String cause, OrderDTO orderDTO) {
+        return orderFinish.orderOver(cause, orderDTO);
     }
 
-    public Object feedback() throws Exception{
-        return payEnd.feedback();
+    public Object feedback(String opinion, OrderDTO orderDTO) throws Exception{
+        return payEnd.feedback(opinion, orderDTO);
     }
 
-    public Object workingGuideList(HttpServletRequest request){
-        return orderService.workingGuideList(request);
+    public Object workingGuideList(HttpServletRequest request,UserModel userModel){
+        return orderService.workingGuideList(request,userModel);
     }
 
     @Override
@@ -59,8 +62,20 @@ public class OrderManger implements Order {
         return "订单创建";
     }
 
-    public OrderModel getOrderModel() {
-        return orderModel;
+    public void removeFinishOrder(UserModel userModel){
+        getOrderMangerMap().remove(userModel.getUser_id());
+    }
+
+    public static Map<Integer,OrderManger> getOrderMangerMap(){
+        return orderMangerMap;
+    }
+
+    public static List<String> getOpinionList() {
+        return opinionList;
+    }
+
+    public OrderDTO getOrderDTO() {
+        return orderDTO;
     }
 
     public String getCurState() {
@@ -68,6 +83,7 @@ public class OrderManger implements Order {
     }
 
     public void setCurState(String curState) {
+        orderDTO.setOrderStatus(curState);
         this.curState = curState;
     }
 

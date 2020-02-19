@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinafight.gongxiangdaoyou.mapper.GuideorderMapper">
+  <resultMap id="BaseResultMap" type="com.chinafight.gongxiangdaoyou.model.Guideorder">
+    <id column="OrderId" jdbcType="INTEGER" property="orderid" />
+    <result column="OrderUser" jdbcType="INTEGER" property="orderuser" />
+    <result column="OrderGuide" jdbcType="INTEGER" property="orderguide" />
+    <result column="OrderPrice" jdbcType="REAL" property="orderprice" />
+    <result column="OrderFrom" jdbcType="VARCHAR" property="orderfrom" />
+    <result column="OrderDst" jdbcType="VARCHAR" property="orderdst" />
+    <result column="opinion" jdbcType="VARCHAR" property="opinion" />
+    <result column="orderStatus" jdbcType="VARCHAR" property="orderstatus" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from guideorder
+    where OrderId = #{orderid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.chinafight.gongxiangdaoyou.model.Guideorder">
+    insert into guideorder (OrderId, OrderUser, OrderGuide, 
+      OrderPrice, OrderFrom, OrderDst, 
+      opinion, orderStatus)
+    values (#{orderid,jdbcType=INTEGER}, #{orderuser,jdbcType=INTEGER}, #{orderguide,jdbcType=INTEGER}, 
+      #{orderprice,jdbcType=REAL}, #{orderfrom,jdbcType=VARCHAR}, #{orderdst,jdbcType=VARCHAR}, 
+      #{opinion,jdbcType=VARCHAR}, #{orderstatus,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.chinafight.gongxiangdaoyou.model.Guideorder">
+    update guideorder
+    set OrderUser = #{orderuser,jdbcType=INTEGER},
+      OrderGuide = #{orderguide,jdbcType=INTEGER},
+      OrderPrice = #{orderprice,jdbcType=REAL},
+      OrderFrom = #{orderfrom,jdbcType=VARCHAR},
+      OrderDst = #{orderdst,jdbcType=VARCHAR},
+      opinion = #{opinion,jdbcType=VARCHAR},
+      orderStatus = #{orderstatus,jdbcType=VARCHAR}
+    where OrderId = #{orderid,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select OrderId, OrderUser, OrderGuide, OrderPrice, OrderFrom, OrderDst, opinion, 
+    orderStatus
+    from guideorder
+    where OrderId = #{orderid,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select OrderId, OrderUser, OrderGuide, OrderPrice, OrderFrom, OrderDst, opinion, 
+    orderStatus
+    from guideorder
+  </select>
+</mapper>

@@ -2,6 +2,7 @@ package com.chinafight.gongxiangdaoyou.eunm;
 
 
 import java.util.HashMap;
+import java.util.Map;
 
 public enum CustomerEnum {
     NORMAL_STATUS("状态正常","200"),
@@ -10,6 +11,7 @@ public enum CustomerEnum {
     NORMAL_USER_DELETE("删除成功","200"),
     NORMAL_USER_UPDATE("更新成功","200"),
     NORMAL_USER_SELECT("已搜索到相关用户","200"),
+    NORMAL_CUSTOM("自定义成功消息","200"),
     NORMAL_USER_EXIT("退出成功","200"),
     ERROR_STATUS("状态异常","500"),
     ERROR_USER_EXIST("用户已存在","500"),
@@ -22,6 +24,7 @@ public enum CustomerEnum {
     ERROR_EXCEPTION_USERNAME("用户名参数非法","501"),
     ERROR_EXCEPTION_PASSWORD("密码参数非法","502"),
     ERROR_EXCEPTION_PHONE("电话填写错误","503"),
+    ERROR_CUSTOM("自定义失败消息","500"),
     ERROR_TITLE_NULL("标题不能为空","504"),
     ERROR_TEXT_NULL("问题描述不能为空","505"),
     ERROR_CARD("身份证号码错误","506"),
@@ -48,6 +51,20 @@ public enum CustomerEnum {
 
     public HashMap<Object,Object> getMsgMap(){
         msgMap=new HashMap<>();
+        msgMap.put("msg",getMsg());
+        msgMap.put("code",getCode());
+        return msgMap;
+    }
+    public HashMap<Object,Object> getMsgMap(Object... msg){
+        msgMap=new HashMap<>();
+        msgMap.put("msg",msg);
+        msgMap.put("code",getCode());
+        return msgMap;
+    }
+
+    public HashMap<Object,Object> getParaMsgMap(Object... data){
+        msgMap=new HashMap<>();
+        msgMap.put("data",data);
         msgMap.put("msg",getMsg());
         msgMap.put("code",getCode());
         return msgMap;

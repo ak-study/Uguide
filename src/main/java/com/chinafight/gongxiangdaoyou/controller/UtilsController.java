@@ -6,8 +6,10 @@ import com.chinafight.gongxiangdaoyou.eunm.CustomerEnum;
 import com.chinafight.gongxiangdaoyou.mapper.utils.ImgMapper;
 import com.chinafight.gongxiangdaoyou.model.ImgModel;
 import com.chinafight.gongxiangdaoyou.provider.TCProvider;
+import com.chinafight.gongxiangdaoyou.service.utils.IPService;
 import com.chinafight.gongxiangdaoyou.utils.CodeUtil;
 import com.chinafight.gongxiangdaoyou.utils.Utils;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,11 +29,12 @@ import java.util.*;
 public class UtilsController {
     @Autowired
     CodeUtil codeUtil;
-
     @Autowired
     TCProvider tcProvider;
     @Autowired
     ImgMapper imgMapper;
+    @Autowired
+    IPService ipService;
 
     @GetMapping("getCode")
     public Object getImg() throws IOException {
@@ -52,14 +55,11 @@ public class UtilsController {
     }
 
     @GetMapping("getAddr")
-    public Object getAddr(HttpServletRequest request){
-        HashMap<Object, Object> map = new HashMap<>();
-        Object city = request.getSession().getAttribute("city");
-        Object ip = request.getSession().getAttribute("ip");
-        map.put("city",city);
-        map.put("ip",ip);
-        map.put("status", CustomerEnum.NORMAL_STATUS.getMsgMap());
-        return map;
+    public Object getAddr(HttpServletRequest request) throws IOException, JSONException {
+        String ipAddr = ipService.getIpAddr(request);
+        HashMap<Object, Object> cityMap = ipService.getAddrName(ipAddr);
+        cityMap.put("ip地址",ipAddr);
+        return cityMap;
     }
 
     @PostMapping("upload")

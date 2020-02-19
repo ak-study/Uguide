@@ -6,6 +6,7 @@ import com.chinafight.gongxiangdaoyou.model.profile.UserModel;
 import com.chinafight.gongxiangdaoyou.provider.TCProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -87,6 +88,10 @@ public class Utils {
     public static boolean isTruePassWord(String passWord) {
         boolean passWordMatches = passWord.matches(".*[a-zA-Z]+.*");
         return passWordMatches && passWord.length() >= 6 && passWord.length() <= 14;
+    }
+
+    public static String getCurCityName(HttpServletRequest request){
+        return (String) request.getSession().getAttribute("city");
     }
 
 }

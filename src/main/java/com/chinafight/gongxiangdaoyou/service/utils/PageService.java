@@ -55,7 +55,7 @@ public class PageService {
         PageHelper.startPage(pageNum,pageSize);
         String ipAddr = ipService.getIpAddr(request);
         try {
-            String city = ipService.getAddrName(ipAddr);
+            String city = ipService.getAddrName(ipAddr).get("city").toString();
             List<ViewModel> localView = viewMapper.getLocalView(city);
             return new PageInfo<>(localView);
         } catch (JSONException | IOException e) {

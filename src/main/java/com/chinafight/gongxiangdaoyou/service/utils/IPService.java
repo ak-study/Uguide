@@ -1,5 +1,6 @@
 package com.chinafight.gongxiangdaoyou.service.utils;
 
+import com.chinafight.gongxiangdaoyou.eunm.CustomerEnum;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -7,15 +8,15 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 
 @Service
 public class IPService {
 
-    public String getAddrName(String IP) throws JSONException, IOException{
+    public HashMap<Object, Object> getAddrName(String IP) throws JSONException, IOException{
 
-        JSONObject json = readJsonFromUrl("http://api.map.baidu.com/location/ip?ak=iTrwV0ddxeFT6QUziPQh2wgGofxmWkmg&ip="+IP);
+        JSONObject json = readJsonFromUrl("http://api.map.baidu.com/location/ip?ak=e1kpO8igvj8ji1hS6eFlfvXb1StqQhz2&ip="+IP);
         /* 获取到的json对象：
          *         {"address":"CN|河北|保定|None|UNICOM|0|0",
          *        "content":{"address_detail":{"province":"河北省","city":"保定市","street":"","district":"","street_number":"","city_code":307},
@@ -23,13 +24,19 @@ public class IPService {
          *        "status":0}
          */
         //如果IP是本地127.0.0.1或者内网IP192.168则status分别返回1和2
+        HashMap<Object, Object> map = new HashMap<>();
         String status = json.opt("status").toString();
         if(!"0".equals(status)){
-            return "福建";
+            if (status.equals("1001") || status.equals("1002")) return CustomerEnum.NORMAL_STATUS.getMsgMap("内网访问");
+            return CustomerEnum.ERROR_STATUS.getMsgMap();
         }
-        JSONObject content=json.getJSONObject("content");              //获取json对象里的content对象
+        JSONObject content=json.getJSONObject("content");//获取json对象里的content对象
         JSONObject addr_detail=content.getJSONObject("address_detail");//从content对象里获取address_detail
-        return addr_detail.opt("city").toString();
+        map.put("province",addr_detail.optString("province"));
+        map.put("city",addr_detail.optString("city"));
+        map.put("address",addr_detail.optString("address"));
+        map.put("point",addr_detail.optString("point"));
+        return map;
     }
 
     private static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {

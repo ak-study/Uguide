@@ -35,15 +35,13 @@ public class GuideController {
 
     @PostMapping("deleteGuide")
     public Object deleteGuide(Integer guideId){
-        Object code = guideService.deleteGuide(guideId);
-        return code;
+        return guideService.deleteGuide(guideId);
     }
 
     @PostMapping("insertGuide")
     public Object insertGuide(String guideName,String guidePhone,
                               String guidePassWord,String guideTrueName){
-        Object code = guideService.insertGuide(guideName,guidePhone,guidePassWord,guideTrueName);
-        return code;
+        return guideService.insertGuide(guideName,guidePhone,guidePassWord,guideTrueName);
     }
 
     @GetMapping("searchGuide")
@@ -61,8 +59,7 @@ public class GuideController {
 
     @PostMapping("guideLogin")
     public Object guideLogin(String guideName,String guidePassWord){
-        Object code = guideService.guideLogin(guideName, guidePassWord);
-        return code;
+        return guideService.guideLogin(guideName, guidePassWord);
     }
 
     @PostMapping("guideSignOut")
@@ -73,9 +70,8 @@ public class GuideController {
     @PostMapping("updateGuide")
     public Object updateGuide(String guideNick,String guideAvatar,Integer guideSex,
                               String guideCard,String guidePhone,Integer guideId,String guideTrueName){
-        Object code = guideService.updateGuide(guideNick, "", guideAvatar,
+        return guideService.updateGuide(guideNick, "", guideAvatar,
                 guideCard, guidePhone, guideId, guideTrueName,guideSex);
-        return code;
     }
 
     @PostMapping("updateGuideAvatar")
