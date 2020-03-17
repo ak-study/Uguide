@@ -1,6 +1,7 @@
 package com.chinafight.gongxiangdaoyou.mapper;
 
 import com.chinafight.gongxiangdaoyou.model.Guideorder;
+import com.chinafight.gongxiangdaoyou.model.profile.GuideModel;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -18,4 +19,8 @@ public interface GuideorderMapper {
     List<Guideorder> selectAll();
 
     int updateByPrimaryKey(Guideorder record);
+
+    List<Guideorder> getOrderByUser(Integer userId);
+
+    List<Guideorder> getOrderByGuide(Integer guideId);
 }

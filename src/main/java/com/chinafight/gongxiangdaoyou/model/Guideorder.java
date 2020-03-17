@@ -19,6 +19,8 @@ public class Guideorder implements Serializable {
 
     private String orderstatus;
 
+    private String detailedlocation;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getOrderid() {
@@ -50,7 +52,7 @@ public class Guideorder implements Serializable {
     }
 
     public void setOrderprice(String orderprice) {
-        this.orderprice = orderprice;
+        this.orderprice = orderprice == null ? null : orderprice.trim();
     }
 
     public String getOrderfrom() {
@@ -85,6 +87,14 @@ public class Guideorder implements Serializable {
         this.orderstatus = orderstatus == null ? null : orderstatus.trim();
     }
 
+    public String getDetailedlocation() {
+        return detailedlocation;
+    }
+
+    public void setDetailedlocation(String detailedlocation) {
+        this.detailedlocation = detailedlocation == null ? null : detailedlocation.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -99,6 +109,7 @@ public class Guideorder implements Serializable {
         sb.append(", orderdst=").append(orderdst);
         sb.append(", opinion=").append(opinion);
         sb.append(", orderstatus=").append(orderstatus);
+        sb.append(", detailedlocation=").append(detailedlocation);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

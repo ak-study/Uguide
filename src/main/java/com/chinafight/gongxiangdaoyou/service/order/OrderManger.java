@@ -3,9 +3,7 @@ package com.chinafight.gongxiangdaoyou.service.order;
 import com.chinafight.gongxiangdaoyou.dto.OrderDTO;
 import com.chinafight.gongxiangdaoyou.model.profile.GuideModel;
 import com.chinafight.gongxiangdaoyou.model.profile.UserModel;
-import com.chinafight.gongxiangdaoyou.service.OrderService;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,31 +11,35 @@ import java.util.Map;
 
 
 public class OrderManger implements Order {
-    private static List<String> opinionList=new ArrayList<>();
-    private static Map<Integer,OrderManger> orderMangerMap=new HashMap<>();
-    private OrderDTO orderDTO = new OrderDTO();
+    private static List<String> opinionList = new ArrayList<>();
+    private static Map<Integer, OrderManger> orderMangerMap = new HashMap<>();
+    private static Map<Integer, OrderManger> orderMangerMapByGuide = new HashMap<>();
     private String curState;
-    private Released released=new Released(this);
-    private NotPay notPay=new NotPay(this);
-    private PayEnd payEnd=new PayEnd(this);
-    private OrderFinish orderFinish=new OrderFinish(this);
-    private OrderService orderService=new OrderService();
-    public OrderManger(UserModel userModel) throws Exception {
+    private OrderDTO orderDTO = new OrderDTO();
+    private Released released = new Released(this);
+    private NotPay notPay = new NotPay(this);
+    private PayEnd payEnd = new PayEnd(this);
+    private OrderFinish orderFinish = new OrderFinish(this);
+    private OrderService orderService = new OrderService();
+
+    public OrderManger(UserModel userModel) {
         orderDTO.setUserModel(userModel);
         this.setCurState(curState);
-        orderMangerMap.put(userModel.getUser_id(),this);
+        orderMangerMap.put(userModel.getUser_id(), this);
     }
 
     @Override
-    public void setOrderMessage(String price, String from, String dst) throws Exception {
+    public void setOrderMessage(String price, String from, String dst, String detailedLocation) throws Exception {
         this.setCurState(released.curState());
         this.orderDTO.setOrderPrice(price);
         this.orderDTO.setOrderFrom(from);
         this.orderDTO.setOrderDst(dst);
+        this.orderDTO.setDetailedLocation(detailedLocation);
     }
 
     public Object orderReceive(GuideModel guideModel, OrderDTO orderDTO) throws Exception {
         orderDTO.setGuideModel(guideModel);
+        orderMangerMapByGuide.put(guideModel.getGuide_id(), this);
         return released.orderReceiving(guideModel, orderDTO);
     }
 
@@ -49,25 +51,29 @@ public class OrderManger implements Order {
         return orderFinish.orderOver(cause, orderDTO);
     }
 
-    public Object feedback(String opinion, OrderDTO orderDTO) throws Exception{
+    public Object feedback(String opinion, OrderDTO orderDTO) throws Exception {
         return payEnd.feedback(opinion, orderDTO);
     }
 
-    public Object workingGuideList(HttpServletRequest request,UserModel userModel){
-        return orderService.workingGuideList(request,userModel);
-    }
+//    public Object workingGuideList(HttpServletRequest request,UserModel userModel){
+//        return orderService.workingGuideList(request,userModel);
+//    }
 
     @Override
     public String curState() throws Exception {
         return "订单创建";
     }
 
-    public void removeFinishOrder(UserModel userModel){
+    public void removeFinishOrder(UserModel userModel) {
         getOrderMangerMap().remove(userModel.getUser_id());
     }
 
-    public static Map<Integer,OrderManger> getOrderMangerMap(){
+    public static Map<Integer, OrderManger> getOrderMangerMap() {
         return orderMangerMap;
+    }
+
+    public static Map<Integer, OrderManger> getOrderMangerMapByGuide() {
+        return orderMangerMapByGuide;
     }
 
     public static List<String> getOpinionList() {
@@ -101,5 +107,9 @@ public class OrderManger implements Order {
 
     public OrderFinish getOrderFinish() {
         return orderFinish;
+    }
+
+    public OrderService getOrderService() {
+        return orderService;
     }
 }

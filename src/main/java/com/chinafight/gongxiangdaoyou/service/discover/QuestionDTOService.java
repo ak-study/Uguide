@@ -182,15 +182,4 @@ public class QuestionDTOService {
         response.addCookie(new Cookie("token", String.valueOf(System.currentTimeMillis())));
         return true;
     }
-
-//
-//
-//    /**
-//     *
-//     * @param questionDTO 需要查询的问题
-//     * @return 与该问题相关联的问题集合（通过tag查询）
-//     */
-//    public List<QuestionDTO> getRelatedQuestionList(QuestionDTO questionDTO){
-//
-//    }
 }

@@ -57,14 +57,24 @@ public enum CustomerEnum {
     }
     public HashMap<Object,Object> getMsgMap(Object... msg){
         msgMap=new HashMap<>();
-        msgMap.put("msg",msg);
+        if (msg.length==1){
+            Object message=msg[0];
+            msgMap.put("msg",message);
+        }else{
+            msgMap.put("msg",msg);
+        }
         msgMap.put("code",getCode());
         return msgMap;
     }
 
     public HashMap<Object,Object> getParaMsgMap(Object... data){
         msgMap=new HashMap<>();
-        msgMap.put("data",data);
+        if (data.length==1){
+            Object singleData=data[0];
+            msgMap.put("data",singleData);
+        }else {
+            msgMap.put("data",data);
+        }
         msgMap.put("msg",getMsg());
         msgMap.put("code",getCode());
         return msgMap;

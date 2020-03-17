@@ -12,7 +12,7 @@ public interface Order {
      * @param dst 订单的目的地
      * @throws Exception 如果为实现则抛出异常
      */
-    default void setOrderMessage(String price, String from, String dst) throws Exception {
+    default void setOrderMessage(String price, String from, String dst,String detailedLocation) throws Exception {
         throw new Exception(CustomerEnum.ERROR_STATUS.getMsg());
     }
 
@@ -25,7 +25,6 @@ public interface Order {
 
     /**
      * 订单完结
-     * @return
      */
     default Object orderOver(String cause, OrderDTO orderDTO) throws Exception{
         throw new Exception(CustomerEnum.ERROR_STATUS.getMsg());

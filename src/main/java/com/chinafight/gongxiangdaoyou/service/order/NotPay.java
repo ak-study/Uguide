@@ -1,5 +1,6 @@
 package com.chinafight.gongxiangdaoyou.service.order;
 
+import com.alibaba.fastjson.JSONArray;
 import com.chinafight.gongxiangdaoyou.eunm.CustomerEnum;
 import com.chinafight.gongxiangdaoyou.dto.OrderDTO;
 import com.chinafight.gongxiangdaoyou.socket.WebSocketServer;
@@ -24,6 +25,8 @@ public class NotPay implements Order{
                 String.valueOf(orderDTO.getUserModel().getUser_id()));//向用户发送消息
         WebSocketServer.sendInfo("用户已付款",
                 String.valueOf(orderDTO.getGuideModel().getGuide_id()));//向导游发送付款消息
+//        String orderMsg = JSONArray.toJSON(orderDTO).toString();
+//        WebSocketServer.sendInfo(orderMsg,orderDTO.getGuideModel().getGuide_id().toString());//向导游发送用户订单信息
         return map;
     }
 

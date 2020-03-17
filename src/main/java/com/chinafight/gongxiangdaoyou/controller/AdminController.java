@@ -34,20 +34,17 @@ public class AdminController {
 
     @GetMapping("deleteAdmin")
     public Object deleteAdmin(int id) {
-        Object code = adminService.deleteAdmin(id);
-        return code;
+        return adminService.deleteAdmin(id);
     }
 
     @PostMapping("updateAdmin")
     public Object updateAdmin(AdminModel adminModel) {
-        Object code = adminService.updateAdmin(adminModel);
-        return code;
+        return adminService.updateAdmin(adminModel);
     }
 
     @PostMapping("insertAdmin")
     public Object insertAdmin(AdminModel adminModel) {
-        Object code = adminService.insertAdmin(adminModel);
-        return code;
+        return adminService.insertAdmin(adminModel);
     }
 
     @GetMapping("searchAdmin")

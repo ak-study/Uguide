@@ -2,7 +2,6 @@ package com.chinafight.gongxiangdaoyou.service.order;
 
 import com.chinafight.gongxiangdaoyou.dto.OrderDTO;
 import com.chinafight.gongxiangdaoyou.model.profile.GuideModel;
-import com.chinafight.gongxiangdaoyou.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

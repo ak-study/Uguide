@@ -8,6 +8,7 @@ public enum OrderEnum {
     ORDER_CANCEL_USER("用户取消订单","500"),
     ORDER_CANCEL_GUIDE("导游无法接单","500"),
     ORDER_CANCEL_GUIDE_2("导游拒绝接单","500"),
+    ORDER_OTHER("其他","500"),
     ORDER_EXIT("订单已存在","500")
     ;
     OrderEnum(String msg, String code){

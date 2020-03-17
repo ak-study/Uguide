@@ -1,9 +1,12 @@
 package com.chinafight.gongxiangdaoyou.utils;
 
+import com.chinafight.gongxiangdaoyou.controller.OrderController;
 import com.chinafight.gongxiangdaoyou.eunm.CustomerEnum;
 import com.chinafight.gongxiangdaoyou.model.profile.GuideModel;
 import com.chinafight.gongxiangdaoyou.model.profile.UserModel;
 import com.chinafight.gongxiangdaoyou.provider.TCProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +21,7 @@ public class Utils {
     TCProvider tcProvider = new TCProvider();
     public static final HashMap<String, UserModel> userLoginMap = new HashMap<>();
     public static final HashMap<String, GuideModel> guideLoginMap = new HashMap<>();
+    private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
     public static boolean deleteFile(String pathname) {
         boolean result = false;
@@ -92,6 +96,10 @@ public class Utils {
 
     public static String getCurCityName(HttpServletRequest request){
         return (String) request.getSession().getAttribute("city");
+    }
+
+    public static Logger getLogger(){
+        return logger;
     }
 
 }

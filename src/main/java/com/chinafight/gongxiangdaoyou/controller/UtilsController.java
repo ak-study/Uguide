@@ -56,9 +56,9 @@ public class UtilsController {
 
     @GetMapping("getAddr")
     public Object getAddr(HttpServletRequest request) throws IOException, JSONException {
-        String ipAddr = ipService.getIpAddr(request);
-        HashMap<Object, Object> cityMap = ipService.getAddrName(ipAddr);
-        cityMap.put("ip地址",ipAddr);
+//        String ipAddr = ipService.getIpAddr(request);
+        HashMap<Object, Object> cityMap = ipService.getAddrName("120.43.174.5");
+        cityMap.put("ip地址","120.43.174.5");
         return cityMap;
     }
 

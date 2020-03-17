@@ -5,11 +5,12 @@
     <id column="OrderId" jdbcType="INTEGER" property="orderid" />
     <result column="OrderUser" jdbcType="INTEGER" property="orderuser" />
     <result column="OrderGuide" jdbcType="INTEGER" property="orderguide" />
-    <result column="OrderPrice" jdbcType="REAL" property="orderprice" />
+    <result column="OrderPrice" jdbcType="VARCHAR" property="orderprice" />
     <result column="OrderFrom" jdbcType="VARCHAR" property="orderfrom" />
     <result column="OrderDst" jdbcType="VARCHAR" property="orderdst" />
     <result column="opinion" jdbcType="VARCHAR" property="opinion" />
     <result column="orderStatus" jdbcType="VARCHAR" property="orderstatus" />
+    <result column="detailedLocation" jdbcType="VARCHAR" property="detailedlocation" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from guideorder
@@ -18,31 +19,40 @@
   <insert id="insert" parameterType="com.chinafight.gongxiangdaoyou.model.Guideorder">
     insert into guideorder (OrderId, OrderUser, OrderGuide, 
       OrderPrice, OrderFrom, OrderDst, 
-      opinion, orderStatus)
+      opinion, orderStatus, detailedLocation
+      )
     values (#{orderid,jdbcType=INTEGER}, #{orderuser,jdbcType=INTEGER}, #{orderguide,jdbcType=INTEGER}, 
-      #{orderprice,jdbcType=REAL}, #{orderfrom,jdbcType=VARCHAR}, #{orderdst,jdbcType=VARCHAR}, 
-      #{opinion,jdbcType=VARCHAR}, #{orderstatus,jdbcType=VARCHAR})
+      #{orderprice,jdbcType=VARCHAR}, #{orderfrom,jdbcType=VARCHAR}, #{orderdst,jdbcType=VARCHAR}, 
+      #{opinion,jdbcType=VARCHAR}, #{orderstatus,jdbcType=VARCHAR}, #{detailedlocation,jdbcType=VARCHAR}
+      )
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.chinafight.gongxiangdaoyou.model.Guideorder">
     update guideorder
     set OrderUser = #{orderuser,jdbcType=INTEGER},
       OrderGuide = #{orderguide,jdbcType=INTEGER},
-      OrderPrice = #{orderprice,jdbcType=REAL},
+      OrderPrice = #{orderprice,jdbcType=VARCHAR},
       OrderFrom = #{orderfrom,jdbcType=VARCHAR},
       OrderDst = #{orderdst,jdbcType=VARCHAR},
       opinion = #{opinion,jdbcType=VARCHAR},
-      orderStatus = #{orderstatus,jdbcType=VARCHAR}
+      orderStatus = #{orderstatus,jdbcType=VARCHAR},
+      detailedLocation = #{detailedlocation,jdbcType=VARCHAR}
     where OrderId = #{orderid,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select OrderId, OrderUser, OrderGuide, OrderPrice, OrderFrom, OrderDst, opinion, 
-    orderStatus
+    orderStatus, detailedLocation
     from guideorder
     where OrderId = #{orderid,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
     select OrderId, OrderUser, OrderGuide, OrderPrice, OrderFrom, OrderDst, opinion, 
-    orderStatus
+    orderStatus, detailedLocation
     from guideorder
+  </select>
+    <select id="getOrderByUser" resultType="com.chinafight.gongxiangdaoyou.model.Guideorder">
+    select * from guideorder where orderuser=#{orderid,jdbcType=INTEGER}
+    </select>
+  <select id="getOrderByGuide" resultType="com.chinafight.gongxiangdaoyou.model.Guideorder">
+    select * from guideorder where orderguide=#{orderid,jdbcType=INTEGER}
   </select>
 </mapper>

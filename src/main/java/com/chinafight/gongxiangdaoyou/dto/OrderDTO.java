@@ -15,6 +15,7 @@ public class OrderDTO {
     private UserModel userModel;
     private String orderStatus;
     private String opinion;
+    private String detailedLocation;
 
     @Override
     public String toString() {
@@ -110,5 +111,13 @@ public class OrderDTO {
 
     public void setOrderDst(String orderDst) {
         this.orderDst = orderDst;
+    }
+
+    public String getDetailedLocation() {
+        return detailedLocation;
+    }
+
+    public void setDetailedLocation(String detailedLocation) {
+        this.detailedLocation = detailedLocation;
     }
 }

@@ -17,6 +17,7 @@ public class OrderFinish implements Order {
 
     @Override
     public Object orderOver(String cause, OrderDTO orderDTO){
+        orderDTO.setOpinion("订单取消");
         orderManger.setCurState(cause);
         this.curStatus=cause;
         HashMap<Object, Object> map = new HashMap<>();

@@ -43,7 +43,7 @@ public class UserService {
             map.put("status",CustomerEnum.ERROR_EXCEPTION_PASSWORD.getMsgMap());
             return map;
         }
-        String userNick="新用户"+System.currentTimeMillis();
+        String userNick="新用户"+System.currentTimeMillis()/1000;
         UserModel user = new UserModel();
         user.setUser_name(userName);
         UserModel tempUser = userMapper.getUserByUserName(user);

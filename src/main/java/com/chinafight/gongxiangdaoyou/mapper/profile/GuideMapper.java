@@ -18,6 +18,9 @@ public interface  GuideMapper {
     @Select("select * from guide where guide_id=#{guide_id}")
     GuideModel getGuideById(GuideModel guideModel);
 
+    @Select("select * from guide where guide_id=#{guide_id}")
+    GuideModel selectGuideById(Integer guide_id);
+
     @Delete("delete from guide where guide_id = #{guide_id} ")
     void deleteGuideById(GuideModel guideModel);
 
