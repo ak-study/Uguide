@@ -1,7 +1,7 @@
 package com.chinafight.gongxiangdaoyou.filter;
 
 import com.chinafight.gongxiangdaoyou.service.utils.IPService;
-import org.json.JSONException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
@@ -10,24 +10,21 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.HashMap;
 
+@Slf4j
 @Component
 public class SessionIntercept implements HandlerInterceptor {
-    @Autowired
-    IPService ipService;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String ipAddr = ipService.getIpAddr(request);
-        try {
-            HashMap<Object, Object> cityMap = ipService.getAddrName(ipAddr);
-            request.getSession().setAttribute("city",cityMap.get("city"));
-            request.getSession().setAttribute("province",cityMap.get("province"));
-            request.getSession().setAttribute("ip",ipAddr);
-        } catch (JSONException | IOException e) {
-            e.printStackTrace();
-        }
+        String servletPath = request.getServletPath();
+
+        String serverName = request.getServerName();
+        int serverPort = request.getServerPort();
+        log.info("地址:{}   名称{}   端口{}",servletPath,serverName,serverPort);
+        //        String ipAddr = ipService.getIpAddr(request);
+//        request.getSession().setAttribute("ip",ipAddr);
+//        HashMap<Object, Object> addrName = ipService.getAddrName(ipAddr);
+//        request.getSession().setAttribute("city",addrName.get("city"));
         return true;
     }
     @Override

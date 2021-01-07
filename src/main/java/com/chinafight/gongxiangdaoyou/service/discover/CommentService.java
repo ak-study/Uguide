@@ -9,6 +9,7 @@ import com.chinafight.gongxiangdaoyou.model.profile.UserModel;
 import com.chinafight.gongxiangdaoyou.model.discover.Comment;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;

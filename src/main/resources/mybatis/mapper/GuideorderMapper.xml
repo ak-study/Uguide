@@ -19,11 +19,11 @@
   <insert id="insert" parameterType="com.chinafight.gongxiangdaoyou.model.Guideorder">
     insert into guideorder (OrderId, OrderUser, OrderGuide, 
       OrderPrice, OrderFrom, OrderDst, 
-      opinion, orderStatus, detailedLocation
+      opinion, orderStatus, detailedLocation,orderTime
       )
     values (#{orderid,jdbcType=INTEGER}, #{orderuser,jdbcType=INTEGER}, #{orderguide,jdbcType=INTEGER}, 
       #{orderprice,jdbcType=VARCHAR}, #{orderfrom,jdbcType=VARCHAR}, #{orderdst,jdbcType=VARCHAR}, 
-      #{opinion,jdbcType=VARCHAR}, #{orderstatus,jdbcType=VARCHAR}, #{detailedlocation,jdbcType=VARCHAR}
+      #{opinion,jdbcType=VARCHAR}, #{orderstatus,jdbcType=VARCHAR}, #{detailedlocation,jdbcType=VARCHAR},#{orderTime,jdbcType=VARCHAR}
       )
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.chinafight.gongxiangdaoyou.model.Guideorder">

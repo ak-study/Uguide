@@ -25,8 +25,8 @@
         <!--数据库链接地址账号密码-->
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
                         connectionURL="${spring.datasource.url}"
-                        userId="root"
-                        password="1234">
+                        userId="ak_root"
+                        password="ak1042491722">
         </jdbcConnection>
 
         <!-- 类型转换 -->

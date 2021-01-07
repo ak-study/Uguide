@@ -1,5 +1,6 @@
 package com.chinafight.gongxiangdaoyou.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.chinafight.gongxiangdaoyou.cache.CacheTags;
 import com.chinafight.gongxiangdaoyou.cache.ProfileTag;
 import com.chinafight.gongxiangdaoyou.eunm.CustomerEnum;
@@ -9,11 +10,13 @@ import com.chinafight.gongxiangdaoyou.provider.TCProvider;
 import com.chinafight.gongxiangdaoyou.service.utils.IPService;
 import com.chinafight.gongxiangdaoyou.utils.CodeUtil;
 import com.chinafight.gongxiangdaoyou.utils.Utils;
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,8 +27,9 @@ import java.io.*;
 import java.net.URL;
 import java.util.*;
 
-@Controller
+@RequestMapping()
 @RestController
+@Slf4j
 public class UtilsController {
     @Autowired
     CodeUtil codeUtil;
@@ -56,10 +60,26 @@ public class UtilsController {
 
     @GetMapping("getAddr")
     public Object getAddr(HttpServletRequest request) throws IOException, JSONException {
-//        String ipAddr = ipService.getIpAddr(request);
-        HashMap<Object, Object> cityMap = ipService.getAddrName("120.43.174.5");
-        cityMap.put("ip地址","120.43.174.5");
+        String ipAddr = ipService.getIpAddr(request);
+        System.out.println(ipAddr);
+        HashMap<Object, Object> cityMap = ipService.getAddrName(ipAddr);
+        cityMap.put("ip地址",ipAddr);
         return cityMap;
+    }
+
+    @GetMapping("getAddrJson")
+    public Object getAddrJson(HttpServletRequest request,String ip){
+        String ipAddr = ipService.getIpAddr(request);
+        //数据测试
+        if (ip!=null){
+            ipAddr=ip;
+        }
+        String addrJson = ipService.getAddrJson(ipAddr);
+        log.info("ip地址: {}",ipAddr);
+        if ("{}".equals(addrJson)){
+            return CustomerEnum.ERROR_STATUS.getMsgMap("查询次数超限额");
+        }
+        return ipAddr;
     }
 
     @PostMapping("upload")

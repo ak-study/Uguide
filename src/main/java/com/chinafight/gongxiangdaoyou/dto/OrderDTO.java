@@ -16,6 +16,7 @@ public class OrderDTO {
     private String orderStatus;
     private String opinion;
     private String detailedLocation;
+    private String time;
 
     @Override
     public String toString() {
@@ -119,5 +120,13 @@ public class OrderDTO {
 
     public void setDetailedLocation(String detailedLocation) {
         this.detailedLocation = detailedLocation;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

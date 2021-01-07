@@ -21,6 +21,8 @@ public class Guideorder implements Serializable {
 
     private String detailedlocation;
 
+    private String orderTime;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getOrderid() {
@@ -113,5 +115,17 @@ public class Guideorder implements Serializable {
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
+    }
+
+    public String getOrderTime() {
+        return orderTime;
+    }
+
+    public void setOrderTime(String orderTime) {
+        this.orderTime = orderTime;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 }

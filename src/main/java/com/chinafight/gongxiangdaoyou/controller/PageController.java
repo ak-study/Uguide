@@ -1,6 +1,7 @@
 package com.chinafight.gongxiangdaoyou.controller;
 
 import com.chinafight.gongxiangdaoyou.eunm.CustomerEnum;
+import com.chinafight.gongxiangdaoyou.model.Guideorder;
 import com.chinafight.gongxiangdaoyou.model.ViewModel;
 import com.chinafight.gongxiangdaoyou.model.profile.AdminModel;
 import com.chinafight.gongxiangdaoyou.model.profile.GuideModel;
@@ -10,12 +11,13 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
-@Controller
+@RequestMapping()
 @RestController
 public class PageController {
     @Autowired
@@ -45,6 +47,15 @@ public class PageController {
         PageInfo<GuideModel> guidePage = pageService.guidePage(pageNum, pageSize);
         map.put("data",guidePage.getList());
         map.put("size",guidePage.getPages());
+        return map;
+    }
+
+    @GetMapping("order/page")
+    public Object orderPage(Integer pageNum,Integer pageSize){
+        HashMap<Object, Object> map = new HashMap<>(16);
+        PageInfo<Guideorder> orderPage = pageService.orderPage(pageNum, pageSize);
+        map.put("data",orderPage.getList());
+        map.put("size",orderPage.getPages());
         return map;
     }
 

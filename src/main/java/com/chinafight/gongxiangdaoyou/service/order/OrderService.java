@@ -146,12 +146,13 @@ public class OrderService {
         order.setOrderguide(orderDTO.getOrderGuide());
         order.setOrderuser(orderDTO.getOrderUser());
         order.setDetailedlocation(orderDTO.getDetailedLocation());
+        order.setOrderTime(String.valueOf(System.currentTimeMillis()));
         guideorderMapper.insert(order);
     }
 
     //获取所有订单
     public Object getAllOrders(){
-        List<Guideorder> orders = guideorderMapper.selectAll();
+        List<Guideorder> orders = guideorderMapper.getOrderList();
         return CustomerEnum.NORMAL_STATUS.getMsgMap(orders);
     }
 

@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum CustomerEnum {
+    /**
+     * 用户状态
+     */
     NORMAL_STATUS("状态正常","200"),
     NORMAL_USER_LOGIN("登陆成功","200"),
     NORMAL_USER_INSERT("添加成功","200"),

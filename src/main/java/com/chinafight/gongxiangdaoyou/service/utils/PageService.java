@@ -1,13 +1,16 @@
 package com.chinafight.gongxiangdaoyou.service.utils;
 
+import com.chinafight.gongxiangdaoyou.mapper.GuideorderMapper;
 import com.chinafight.gongxiangdaoyou.mapper.ViewMapper;
 import com.chinafight.gongxiangdaoyou.mapper.profile.AdminMapper;
 import com.chinafight.gongxiangdaoyou.mapper.profile.GuideMapper;
 import com.chinafight.gongxiangdaoyou.mapper.profile.UserMapper;
+import com.chinafight.gongxiangdaoyou.model.Guideorder;
 import com.chinafight.gongxiangdaoyou.model.ViewModel;
 import com.chinafight.gongxiangdaoyou.model.profile.AdminModel;
 import com.chinafight.gongxiangdaoyou.model.profile.GuideModel;
 import com.chinafight.gongxiangdaoyou.model.profile.UserModel;
+import com.chinafight.gongxiangdaoyou.service.order.OrderManger;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.json.JSONException;
@@ -26,6 +29,8 @@ public class PageService {
     UserMapper userMapper;
     @Autowired
     GuideMapper guideMapper;
+    @Autowired
+    GuideorderMapper guideorderMapper;
 
     @Autowired
     ViewMapper viewMapper;
@@ -34,7 +39,8 @@ public class PageService {
     IPService ipService;
 
     public PageInfo<AdminModel> adminPage(Integer pageNum,Integer pageSize){
-        PageHelper.startPage(pageNum,pageSize);//这行是重点，表示从pageNum页开始，每页pageSize条数据
+        //这行是重点，表示从pageNum页开始，每页pageSize条数据
+        PageHelper.startPage(pageNum,pageSize);
         List<AdminModel> adminModels = adminMapper.selectAdmin();
         return new PageInfo<>(adminModels);
     }
@@ -43,6 +49,11 @@ public class PageService {
         PageHelper.startPage(pageNum,pageSize);
         List<UserModel> userList = userMapper.getUserList();
         return new PageInfo<>(userList);
+    }
+    public PageInfo<Guideorder> orderPage(Integer pageNum, Integer pageSize){
+        PageHelper.startPage(pageNum,pageSize);
+        List<Guideorder> orderList = guideorderMapper.getOrderList();
+        return new PageInfo<>(orderList);
     }
 
     public PageInfo<GuideModel> guidePage(Integer pageNum,Integer pageSize){

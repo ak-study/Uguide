@@ -1,12 +1,12 @@
 package com.chinafight.gongxiangdaoyou.service.utils;
 
 import com.chinafight.gongxiangdaoyou.eunm.CustomerEnum;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
-import javax.naming.ldap.Rdn;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.net.MalformedURLException;
@@ -14,12 +14,13 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
+@Slf4j
 @Service
 public class IPService {
 
     public HashMap<Object, Object> getAddrName(String IP) throws JSONException, IOException{
 
-        JSONObject json = readJsonFromUrl("http://api.map.baidu.com/location/ip?ak=wws9Qu73jw4QkOL6osEyIsA9Yob2yYgR&ip="+IP);
+        JSONObject json = readJsonFromUrl("http://api.map.baidu.com/location/ip?ak=vgrSAB4UtprjZHvfPP9yxpLfR73IqysG&ip="+IP);
         /* 获取到的json对象：
          *         {"address":"CN|河北|保定|None|UNICOM|0|0",
          *        "content":{"address_detail":{"province":"河北省","city":"保定市","street":"","district":"","street_number":"","city_code":307},
@@ -27,38 +28,44 @@ public class IPService {
          *        "status":0}
          */
         //如果IP是本地127.0.0.1或者内网IP192.168则status分别返回1和2
-        HashMap<Object, Object> map = new HashMap<>();
+        HashMap<Object, Object> map = new HashMap<>(16);
         String status = json.opt("status").toString();
+        log.info("状态码："+status);
+        //内网访问
         if(!"0".equals(status)){
-            if (status.equals("1001") || status.equals("1002")){//内网访问
-                map.put("city","泉州市");
-                return map;
+            if ("1001".equals(status) || "1002".equals(status)){
+                map.put("city","内网访问");
+                return CustomerEnum.ERROR_STATUS.getMsgMap(map);
             }
-            return CustomerEnum.ERROR_STATUS.getMsgMap();
         }
-        JSONObject content=json.getJSONObject("content");//获取json对象里的content对象
-        JSONObject addr_detail=content.getJSONObject("address_detail");//从content对象里获取address_detail
-        JSONObject point = content.getJSONObject("point");
-        map.put("province",addr_detail.optString("province"));
-        map.put("city",addr_detail.optString("city"));
-        map.put("x",point.optString("x"));
-        map.put("y",point.optString("y"));
+        //获取json对象里的content对象
+        //            JSONObject content=json.getJSONObject("content");
+
+        //从content对象里获取address_detail
+//            JSONObject addrDetail =content.getJSONObject("address_detail");
+//            JSONObject point = content.getJSONObject("point");
+        map.put("province","福建");
+        map.put("city","泉州");
+        map.put("x","123");
+        map.put("y","123");
         return map;
     }
 
-    public Object getCoorsByIp(String x,String y) throws IOException, JSONException {
-        String location=x+","+y;
-        URL url = new URL("http://api.map.baidu.com/geocoder/v2/?ak=wws9Qu73jw4QkOL6osEyIsA9Yob2yYgR&location="+location+"&output=json&pois=0");
-        JSONObject jsonObject = readJsonFromUrl(url.toString());
-        System.out.println(jsonObject.toString());
+    public String getAddrJson(String Ip){
+        JSONObject json = null;
+        try {
+            json = readJsonFromUrl("http://api.map.baidu.com/location/ip?ak=vgrSAB4UtprjZHvfPP9yxpLfR73IqysG&ip="+Ip);
+            return com.alibaba.fastjson.JSONObject.toJSONString(json);
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
     private static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
         try (InputStream is = new URL(url).openStream()) {
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));//Charset.forName("UTF-8")
+            BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
             String jsonText = readAll(rd);
-            // System.out.println(json);
             rd.close();
             return new JSONObject(jsonText);
         }
@@ -94,7 +101,7 @@ public class IPService {
         URL tirc = new URL("http://api.map.baidu.com/geocoder/v2/?callback=renderReverse&location=" + latitude + "," + longitude
                 + "&output=json&pois=1&ak=" + "wws9Qu73jw4QkOL6osEyIsA9Yob2yYgR");
         try {
-            in = new BufferedReader(new InputStreamReader(tirc.openStream(), "UTF-8"));
+            in = new BufferedReader(new InputStreamReader(tirc.openStream(), StandardCharsets.UTF_8));
             String res;
             StringBuilder sb = new StringBuilder("");
             while ((res = in.readLine()) != null) {
