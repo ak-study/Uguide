@@ -130,27 +130,15 @@ public class QuestionDTOService {
 
     }
 
-    public Object uploadQuestionImg(Long questionId, MultipartFile[] file) {
+    public Object uploadQuestionImg(Long questionId, MultipartFile[] file) throws IOException {
         for (MultipartFile multipartFile : file) {
-            File f = null;
-            try (InputStream inputStream = multipartFile.getInputStream()) {
-                f = new File(Objects.requireNonNull(multipartFile.getOriginalFilename()));
-                Utils.inputStreamToFile(inputStream, f);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            assert f != null;
-            URL url = tcProvider.upLoad(f);
-            imgMapper.insertImg(2, url.toString(), questionId.toString());
-            Utils.deleteTempFile(f);
+            String url = tcProvider.upLoad(multipartFile);
+            imgMapper.insertImg(2, url, questionId.toString());
         }
         return CustomerEnum.NORMAL_STATUS.getMsgMap();
     }
 
     public Object incQuestionLikes(Long questionId, HttpServletRequest request, HttpServletResponse response) {
-//        if (!check(request,response)){
-//            return CustomerEnum.ERROR_STATUS.getParaMsgMap("用户已点赞");
-//        }
         if (questionMapper.getQuestionByID(questionId) == null) {
             return OrderEnum.QUESTION_NOT_EXIT.getMsgMap();
         }

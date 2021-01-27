@@ -2,6 +2,7 @@ package com.chinafight.gongxiangdaoyou.config;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONPath;
+import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -19,11 +20,11 @@ public class Test {
     public static void main(String[] args) {
         HttpClient httpClient = new HttpClient();
         try {
-            for (int i = 0; i < 400; i++) {
+            for (int i = 0; i < 4000; i++) {
                 System.out.println("开始爬取第" + (1 + i) + "页评论。");
                 getMessage(httpClient, "800760067", i + 1, 2);
             }
-            System.out.println("一共有 "+ count +" 个lsp;");
+            System.out.println("一共有 " + count + " 个lsp;");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -39,26 +40,32 @@ public class Test {
      * sort:排序。0:按照时间排序。2：按照热度排序。默认2
      */
     public static void getMessage(HttpClient httpClient, String oid, int pn,
-                                  int sort) throws IOException {
-        //请求接口地址
-        String biliUrl = "https://api.bilibili.com/x/v2/reply?&type=1&oid=" + oid + "&pn=" + pn + "&sort=" + sort;
-        PostMethod postMethod = new PostMethod();
-        GetMethod getMethod = new GetMethod(biliUrl);
-        //设置请求头
-        postMethod.setRequestHeader("user-agent", "postMethod.setRequestHeader(\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36");
-        httpClient.executeMethod(getMethod);
-        //获取到接口返回值
-        String text = getMethod.getResponseBodyAsString();
-        JSONObject jsonObject = JSONObject.parseObject(text);
-        for (int i = 0; i < 42; i++) {
-            String name = (String) JSONPath.eval(jsonObject, "$.data.replies[" + i + "].member.uname");
-            String sex = (String) JSONPath.eval(jsonObject, "$.data.replies[" + i + "].member.sex");
-            String message = (String) JSONPath.eval(jsonObject, "$.data.replies[" + i + "].content.message");
-            if (message == null || !message.contains("老婆")) {
-                continue;
+                                  int sort) {
+        try {
+            //请求接口地址
+            String biliUrl = "https://api.bilibili.com/x/v2/reply?&type=1&oid=" + oid + "&pn=" + pn + "&sort=" + sort;
+            GetMethod getMethod = new GetMethod(biliUrl);
+            PostMethod postMethod = new PostMethod();
+            //设置请求头
+            postMethod.setRequestHeader("user-agent", "postMethod.setRequestHeader(\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36");
+            httpClient.executeMethod(getMethod);
+            //获取到接口返回值
+            String text = getMethod.getResponseBodyAsString();
+            getMethod.abort();
+            JSONObject jsonObject = JSONObject.parseObject(text);
+            for (int i = 0; i < jsonObject.size(); i++) {
+                String name = (String) JSONPath.eval(jsonObject, "$.data.replies[" + i + "].member.uname");
+                String sex = (String) JSONPath.eval(jsonObject, "$.data.replies[" + i + "].member.sex");
+                String message = (String) JSONPath.eval(jsonObject, "$.data.replies[" + i + "].content.message");
+                if (message == null || !message.contains("老婆")) {
+                    continue;
+                }
+                count++;
+                FileUtils.writeContent("用户：" + name + "，性别：" + sex + "，评论:" + message);
             }
-            count++;
-            FileUtils.writeContent("用户：" + name + "，性别：" + sex + "，评论:" + message);
+        } catch (Exception ignored) {
         }
     }
+
+
 }

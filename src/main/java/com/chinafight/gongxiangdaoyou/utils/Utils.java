@@ -8,6 +8,7 @@ import com.chinafight.gongxiangdaoyou.provider.TCProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -55,26 +56,26 @@ public class Utils {
     }
 
     //获取流文件
-    public static void inputStreamToFile(InputStream ins, File file) {
-        try {
-            OutputStream os = new FileOutputStream(file);
-            int bytesRead = 0;
-            byte[] buffer = new byte[8192];
-            while ((bytesRead = ins.read(buffer, 0, 8192)) != -1) {
-                os.write(buffer, 0, bytesRead);
-            }
-            os.close();
-            ins.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public static void inputStreamToFile(InputStream ins, MultipartFile file) {
+//        try {
+//            OutputStream os = new FileOutputStream(file);
+//            int bytesRead = 0;
+//            byte[] buffer = new byte[8192];
+//            while ((bytesRead = ins.read(buffer, 0, 8192)) != -1) {
+//                os.write(buffer, 0, bytesRead);
+//            }
+//            os.close();
+//            ins.close();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
-    public static void deleteTempFile(File file) {
-        if (file != null) {
-            File del = new File(file.toURI());
-            del.delete();
-        }
+    public static void deleteTempFile(MultipartFile file) {
+//        if (file != null) {
+//            File del = new File(file.toURI());
+//            del.delete();
+//        }
     }
 
     public static boolean isTrueCard(String card) {

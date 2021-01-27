@@ -1,6 +1,5 @@
 package com.chinafight.gongxiangdaoyou.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.chinafight.gongxiangdaoyou.cache.CacheTags;
 import com.chinafight.gongxiangdaoyou.cache.ProfileTag;
 import com.chinafight.gongxiangdaoyou.eunm.CustomerEnum;
@@ -13,7 +12,6 @@ import com.chinafight.gongxiangdaoyou.utils.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,20 +40,7 @@ public class UtilsController {
 
     @GetMapping("getCode")
     public Object getImg() throws IOException {
-        HashMap<Object, Object> msgMap = new HashMap<>();
-        File file = new File("/" + System.currentTimeMillis() + ".jpg");
-        OutputStream out = new FileOutputStream(file);
-        Map<String, Object> map = CodeUtil.generateCodeAndPic();
-        ImageIO.write((RenderedImage) map.get("codePic"), "jpeg", out);
-        URL url = tcProvider.upLoad(file);
-        //生成默认头像地址
-//        URL url1 = tcProvider.upLoad(new File("C://Users/10424/Desktop/code/111.png"));
-//        System.out.println(url1);
-        Utils.deleteFile(file.getPath());
-        msgMap.put("url", url);
-        msgMap.put("value", map.get("code"));
-        msgMap.put("status", CustomerEnum.NORMAL_STATUS.getMsgMap());
-        return msgMap;
+        return null;
     }
 
     @GetMapping("getAddr")
@@ -67,52 +52,14 @@ public class UtilsController {
         return cityMap;
     }
 
-    @GetMapping("getAddrJson")
-    public Object getAddrJson(HttpServletRequest request,String ip){
-        String ipAddr = ipService.getIpAddr(request);
-        //数据测试
-        if (ip!=null){
-            ipAddr=ip;
-        }
-        String addrJson = ipService.getAddrJson(ipAddr);
-        log.info("ip地址: {}",ipAddr);
-        if ("{}".equals(addrJson)){
-            return CustomerEnum.ERROR_STATUS.getMsgMap("查询次数超限额");
-        }
-        return ipAddr;
-    }
-
     @PostMapping("upload")
     public Object upLoadFile(MultipartFile file) throws IOException {
-        File f = null;
-        URL url;
-        if(file.equals("")||file.getSize()<=0){
-            file = null;
-        }else{
-            InputStream ins = file.getInputStream();
-            f=new File(Objects.requireNonNull(file.getOriginalFilename()));
-            Utils.inputStreamToFile(ins,f);
-            ins.close();
-            url = tcProvider.upLoad(f);
-            Utils.deleteTempFile(f);//删除临时文件
-            return url;
-        }
-        return CustomerEnum.ERROR_NULL_POINT.getMsgMap();
+        return tcProvider.upLoad(file);
     }
 
     @PostMapping("uploadBanner")
     public Object upLoadBanner(MultipartFile file) throws IOException{
-        if (file.isEmpty()){
-            return CustomerEnum.ERROR_NULL_POINT.getMsgMap();
-        }
-        File f = null;
-        URL url;
-        InputStream ins = file.getInputStream();
-        f=new File(Objects.requireNonNull(file.getOriginalFilename()));
-        Utils.inputStreamToFile(ins,f);
-        ins.close();
-        url = tcProvider.upLoad(f);
-        imgMapper.insertImg(1,url+"","banner"+System.currentTimeMillis());
+        tcProvider.upLoad(file);
         return CustomerEnum.NORMAL_USER_INSERT.getMsgMap();
     }
 
@@ -140,20 +87,6 @@ public class UtilsController {
         }
         map.put("data",bannerList);
         map.put("status",CustomerEnum.NORMAL_STATUS.getMsgMap());
-        return map;
-    }
-
-    @GetMapping("getFlushBanner")
-    public Object getFlushBanner(){
-        URL url1 = tcProvider.upLoad(new File("C:\\Users\\10424\\Desktop\\code\\banner1.jpg"));
-        URL url2 = tcProvider.upLoad(new File("C:\\Users\\10424\\Desktop\\code\\banner2.jpg"));
-        URL url3 = tcProvider.upLoad(new File("C:\\Users\\10424\\Desktop\\code\\banner3.jpg"));
-        URL url4 = tcProvider.upLoad(new File("C:\\Users\\10424\\Desktop\\code\\banner4.jpg"));
-        HashMap<Object, Object> map = new HashMap<>();
-        map.put("url1",url1);
-        map.put("url2",url2);
-        map.put("url3",url3);
-        map.put("url4",url4);
         return map;
     }
 

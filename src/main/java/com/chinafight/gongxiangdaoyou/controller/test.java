@@ -18,7 +18,6 @@ public class test {
     @ResponseBody
     @GetMapping("sent")
     public Object sentMessage() throws IOException {
-        WebSocketServer.sendInfo("test","1059");
         return "success";
     }
 }

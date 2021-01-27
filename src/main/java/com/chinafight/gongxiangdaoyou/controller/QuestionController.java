@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.HashMap;
 
 @RequestMapping()
@@ -34,7 +35,7 @@ public class QuestionController {
     }
 
     @PostMapping("publishQuestion")
-    public Object publishQuestion(Long userId, String title, String text, MultipartFile[] file){
+    public Object publishQuestion(Long userId, String title, String text, MultipartFile[] file) throws IOException {
         Question question = new Question();
         question.setTitle(title);
         question.setDescription(text);

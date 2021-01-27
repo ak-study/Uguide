@@ -19,35 +19,9 @@ import java.util.HashMap;
 public class IPService {
 
     public HashMap<Object, Object> getAddrName(String IP) throws JSONException, IOException{
-
-        JSONObject json = readJsonFromUrl("http://api.map.baidu.com/location/ip?ak=vgrSAB4UtprjZHvfPP9yxpLfR73IqysG&ip="+IP);
-        /* 获取到的json对象：
-         *         {"address":"CN|河北|保定|None|UNICOM|0|0",
-         *        "content":{"address_detail":{"province":"河北省","city":"保定市","street":"","district":"","street_number":"","city_code":307},
-         *        "address":"河北省保定市","point":{"x":"12856963.35","y":"4678360.5"}},
-         *        "status":0}
-         */
-        //如果IP是本地127.0.0.1或者内网IP192.168则status分别返回1和2
         HashMap<Object, Object> map = new HashMap<>(16);
-        String status = json.opt("status").toString();
-        log.info("状态码："+status);
-        //内网访问
-        if(!"0".equals(status)){
-            if ("1001".equals(status) || "1002".equals(status)){
-                map.put("city","内网访问");
-                return CustomerEnum.ERROR_STATUS.getMsgMap(map);
-            }
-        }
-        //获取json对象里的content对象
-        //            JSONObject content=json.getJSONObject("content");
-
-        //从content对象里获取address_detail
-//            JSONObject addrDetail =content.getJSONObject("address_detail");
-//            JSONObject point = content.getJSONObject("point");
         map.put("province","福建");
-        map.put("city","泉州");
-        map.put("x","123");
-        map.put("y","123");
+        map.put("city","福州市连江县");
         return map;
     }
 

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class PublishService {
     @Autowired
     ImgMapper imgMapper;
 
-    public Object publishQuestion(Question question, Long userId, MultipartFile[] file) {
+    public Object publishQuestion(Question question, Long userId, MultipartFile[] file) throws IOException {
         if (userId == null) {
             return null;
         }
