@@ -10,7 +10,7 @@
 <button onclick="sentMessage()">发送消息</button>
 <hr/>
 <button onclick="close()">关闭连接</button>
-<hr/>
+<hr/>;
 </body>
 
 <script type="text/javascript">
@@ -20,7 +20,7 @@
     } else {
       console.log("您的浏览器支持WebSocket");
 
-      socket = new WebSocket("ws://localhost:8082/websocket/"${userId});
+      socket = new WebSocket("ws://localhost:8083/websocket/8888");
         //打开事件
       socket.onopen = function () {
         console.log("Socket 已打开");

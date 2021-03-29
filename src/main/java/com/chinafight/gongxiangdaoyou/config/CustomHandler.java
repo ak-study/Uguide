@@ -31,26 +31,32 @@ public class CustomHandler {
     @ExceptionHandler(value = Exception.class)
     public Object exceptionHandler(Exception e) {
         log.error("未知异常！原因是:", e);
-        return e;
+        if (e.getMessage() != null) {
+            return e.getMessage();
+        } else if (e.getCause() != null) {
+            return e.getCause();
+        } else {
+            return "未知异常！";
+        }
     }
 
     /**
-     *  校验错误拦截处理
+     * 校验错误拦截处理
      *
      * @param exception 错误信息集合
      * @return 错误信息
      */
     @ResponseBody
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Object validationBodyException(MethodArgumentNotValidException exception){
+    public Object validationBodyException(MethodArgumentNotValidException exception) {
 
         BindingResult result = exception.getBindingResult();
         if (result.hasErrors()) {
             List<ObjectError> errors = result.getAllErrors();
-            errors.forEach(p ->{
+            errors.forEach(p -> {
                 FieldError fieldError = (FieldError) p;
-                log.error("Data check failure : object{"+fieldError.getObjectName()+"},field{"+fieldError.getField()+
-                        "},errorMessage{"+fieldError.getDefaultMessage()+"}");
+                log.error("Data check failure : object{" + fieldError.getObjectName() + "},field{" + fieldError.getField() +
+                        "},errorMessage{" + fieldError.getDefaultMessage() + "}");
             });
         }
         return "请填写正确信息";
@@ -64,7 +70,7 @@ public class CustomHandler {
      */
     @ResponseBody
     @ExceptionHandler(HttpMessageConversionException.class)
-    public Object parameterTypeException(HttpMessageConversionException exception){
+    public Object parameterTypeException(HttpMessageConversionException exception) {
 
         log.error(exception.getCause().getLocalizedMessage());
         return "类型转换错误";

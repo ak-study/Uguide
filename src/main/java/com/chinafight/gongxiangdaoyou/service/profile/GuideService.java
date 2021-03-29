@@ -16,8 +16,6 @@ public class GuideService {
     @Autowired
     GuideMapper guideMapper;
 
-    @Value("${avatar}")
-    String avatar;
     public Object deleteGuide(Integer guideId){
         if(guideId==null){
             return CustomerEnum.ERROR_NULL_POINT.getMsgMap();
@@ -46,7 +44,7 @@ public class GuideService {
         //默认值
         guide.setGuide_lv(1);
         guide.setGuide_like(0);
-        guide.setGuide_avatar(avatar);
+        guide.setGuide_avatar("");
         guide.setGuide_vip(0);
         guide.setGuide_power(1);
         guide.setGuide_nick(nick);

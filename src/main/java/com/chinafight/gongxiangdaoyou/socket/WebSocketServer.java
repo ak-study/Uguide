@@ -5,6 +5,7 @@ import com.chinafight.gongxiangdaoyou.dto.OrderDTO;
 import com.chinafight.gongxiangdaoyou.eunm.CustomerEnum;
 import com.chinafight.gongxiangdaoyou.service.order.OrderManger;
 import com.chinafight.gongxiangdaoyou.utils.Utils;
+import lombok.EqualsAndHashCode;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -16,6 +17,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 
 @ServerEndpoint("/websocket/{sid}")
 @Component
+@EqualsAndHashCode
 public class WebSocketServer {
     private static int onlineCount = 0;
     private static CopyOnWriteArraySet<WebSocketServer> webSocketSet = new CopyOnWriteArraySet<>();
@@ -30,14 +32,9 @@ public class WebSocketServer {
     public Object onOpen(Session session, @PathParam("sid") String sid) {
         this.session = session;
         this.sid = sid;
-        addOnlineCount();           //在线数加1
+        addOnlineCount();
         Utils.getLogger().info("有新窗口开始监听:" + sid + ",当前在线人数为" + getOnlineCount());
-        webSocketSet.add(this);     //加入set中
-        try {
-            sendMessage("连接成功");
-        } catch (IOException e) {
-            Utils.getLogger().info("websocket IO异常");
-        }
+        webSocketSet.add(this);
         return CustomerEnum.NORMAL_STATUS.getMsgMap();
     }
 
@@ -59,7 +56,9 @@ public class WebSocketServer {
     @OnMessage
     public void onMessage(String message, Session session) throws IOException {
         Utils.getLogger().info("收到来自窗口" + sid + "的信息:" + message);
-        this.sendMessage("服务端已成功接收到消息：" + message);
+        for (WebSocketServer server : webSocketSet) {
+            server.sendMessage(message);
+        }
     }
 
     @OnError

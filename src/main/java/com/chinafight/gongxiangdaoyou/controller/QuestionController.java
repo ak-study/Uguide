@@ -65,4 +65,8 @@ public class QuestionController {
         return questionDTOService.insertTags(tags,questionId);
     }
 
+    @GetMapping("selectQuestions")
+    public Object selectQuestions(String msg){
+        return questionDTOService.selectQuestions(msg);
+    }
 }

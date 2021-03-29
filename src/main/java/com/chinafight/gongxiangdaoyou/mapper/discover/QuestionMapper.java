@@ -46,11 +46,14 @@ public interface QuestionMapper {
     @Select("select * from question where id != #{id} and tag regexp #{tag}")
     List<Question> selectRelated(Question question);
 
-    @Select("select * from question where title regexp #{regexpSearch}")
-    List<Question> selectRelatedFromTitle(String regexpSearch);
+    @Select("select * from question where title regexp #{msg} " +
+            "or tag regexp #{msg} " +
+            "or description regexp #{msg}")
+    List<Question> selectQuestion(String msg);
 
     @Select("select * from question where tag regexp #{tag}")
     List<Question> selectRelatedFromTag(String regexpSearch);
+
 
 
 }

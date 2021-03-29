@@ -45,7 +45,7 @@ public class TCProvider {
                 boolean mkdir = dir.getParentFile().mkdir();
                 log.info("目录创建:{}", mkdir);
             }
-            fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename() + ".jpg";
             String filePath = path  + fileName;
             log.info("保存的路径{}", path + fileName);
 

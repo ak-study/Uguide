@@ -12,7 +12,7 @@ import com.chinafight.gongxiangdaoyou.model.discover.Comment;
 import com.chinafight.gongxiangdaoyou.model.discover.Question;
 import com.chinafight.gongxiangdaoyou.model.profile.UserModel;
 import com.chinafight.gongxiangdaoyou.provider.TCProvider;
-import com.chinafight.gongxiangdaoyou.utils.Utils;
+import com.chinafight.gongxiangdaoyou.service.utils.IPService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,17 +21,12 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class QuestionDTOService {
+    private final Map<Object, Object> repetitionMap = new HashMap<>();
     @Autowired
     QuestionMapper questionMapper;
     @Autowired
@@ -42,6 +37,8 @@ public class QuestionDTOService {
     TCProvider tcProvider;
     @Autowired
     ImgMapper imgMapper;
+    @Autowired
+    IPService ipService;
 
     /**
      * 获取所有人的问题列表
@@ -63,6 +60,12 @@ public class QuestionDTOService {
             questionDTO.setImgList(img);
             questionDTOs.add(questionDTO);
         }
+        questionDTOs.sort(new Comparator<QuestionDTO>() {
+            @Override
+            public int compare(QuestionDTO questionDTO, QuestionDTO t1) {
+                return t1.getGmtCreate().compareTo(questionDTO.getGmtCreate());
+            }
+        });
         return questionDTOs;
     }
 
@@ -139,10 +142,15 @@ public class QuestionDTOService {
     }
 
     public Object incQuestionLikes(Long questionId, HttpServletRequest request, HttpServletResponse response) {
+        Object check = repetitionMap.get(questionId);
+        if (check != null && check.equals(ipService.getIpAddr(request))) {
+            return null;
+        }
         if (questionMapper.getQuestionByID(questionId) == null) {
             return OrderEnum.QUESTION_NOT_EXIT.getMsgMap();
         }
         questionMapper.incQuestionLike(questionId);
+        repetitionMap.put(questionId, ipService.getIpAddr(request));
         return CustomerEnum.NORMAL_STATUS.getMsgMap();
     }
 
@@ -152,6 +160,28 @@ public class QuestionDTOService {
         }
         questionMapper.updateTags(tags, questionId);
         return CustomerEnum.NORMAL_STATUS.getMsgMap();
+    }
+
+    public Object selectQuestions(String msg) {
+        ArrayList<QuestionDTO> questionDTOs = new ArrayList<>();
+        List<Question> questionList = questionMapper.selectQuestion(msg);
+        for (Question question : questionList) {
+            QuestionDTO questionDTO = new QuestionDTO();
+            List<ImgModel> img = imgMapper.getImg(question.getId().toString(), 2);
+            BeanUtils.copyProperties(question, questionDTO);
+            Long creator = question.getCreator();
+            UserModel userModel = userMapper.findUserById(Math.toIntExact(creator));
+            questionDTO.setUserModel(userModel);
+            questionDTO.setImgList(img);
+            questionDTOs.add(questionDTO);
+        }
+        questionDTOs.sort(new Comparator<QuestionDTO>() {
+            @Override
+            public int compare(QuestionDTO questionDTO, QuestionDTO t1) {
+                return t1.getGmtCreate().compareTo(questionDTO.getGmtCreate());
+            }
+        });
+        return questionDTOs;
     }
 
     private boolean check(HttpServletRequest request, HttpServletResponse response) {

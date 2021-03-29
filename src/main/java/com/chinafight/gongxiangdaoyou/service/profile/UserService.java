@@ -23,8 +23,6 @@ public class UserService {
     @Autowired
     ProfileMapper profileMapper;
 
-    @Value("${avatar}")
-    String avatar;
     /**
      * 注册用户
      */
@@ -56,7 +54,7 @@ public class UserService {
         user.setUser_power(1);
         user.setUser_lv(1);
         user.setUser_vip(0);
-        user.setUser_avatar(this.avatar);
+        user.setUser_avatar("");
         user.setUser_trueName("");
         //前端数据
         user.setUser_password(userPassWord);
