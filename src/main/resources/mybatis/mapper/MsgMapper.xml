@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinafight.gongxiangdaoyou.mapper.MsgMapper">
+  <resultMap id="BaseResultMap" type="com.chinafight.gongxiangdaoyou.model.Msg">
+    <id column="msg_id" jdbcType="INTEGER" property="msgId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="friend_id" jdbcType="INTEGER" property="friendId" />
+    <result column="msg" jdbcType="VARCHAR" property="msg" />
+    <result column="create_time"  property="createTime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from msg
+    where msg_id = #{msgId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.chinafight.gongxiangdaoyou.model.Msg">
+    insert into msg (msg_id, user_id, friend_id,
+      msg)
+    values (#{msgId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{friendId,jdbcType=INTEGER},
+      #{msg})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.chinafight.gongxiangdaoyou.model.Msg">
+    update msg
+    set user_id = #{userId,jdbcType=INTEGER},
+      friend_id = #{friendId,jdbcType=INTEGER},
+      msg = #{msg,jdbcType=VARCHAR}
+    where msg_id = #{msgId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select msg_id, user_id, friend_id, msg
+    from msg
+    where msg_id = #{msgId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select msg_id, user_id, friend_id, msg
+    from msg
+  </select>
+    <select id="selectMsgByUserId" resultType="java.util.Map">
+      select * from msg
+      where user_id = #{userId} and friend_id = #{friendId} or
+      friend_id = #{userId} and user_id = #{friendId}
+      order by create_time
+    </select>
+
+  <select id="selectMsgFromLatest" resultType="java.util.Map">
+      select * from msg
+      where user_id = #{userId} and friend_id = #{friendId} or
+      friend_id = #{userId} and user_id = #{friendId}
+      order by create_time desc
+      limit 1
+    </select>
+</mapper>
