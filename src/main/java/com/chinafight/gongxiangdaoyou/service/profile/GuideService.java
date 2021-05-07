@@ -44,7 +44,7 @@ public class GuideService {
         //默认值
         guide.setGuide_lv(1);
         guide.setGuide_like(0);
-        guide.setGuide_avatar("");
+        guide.setGuide_avatar("https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1283089748,1187111904&fm=26&gp=0.jpg");
         guide.setGuide_vip(0);
         guide.setGuide_power(1);
         guide.setGuide_nick(nick);

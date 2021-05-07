@@ -18,10 +18,17 @@ import java.util.HashMap;
 @Service
 public class IPService {
 
-    public HashMap<Object, Object> getAddrName(String IP) throws JSONException, IOException{
-        HashMap<Object, Object> map = new HashMap<>(16);
-        map.put("province","福建");
-        map.put("city","福州市连江县");
+    public HashMap<String, String> getAddrName(String IP) throws JSONException, IOException{
+        HashMap<String, String> map = new HashMap<>(16);
+        map.put("province","福建福州市");
+        map.put("city","连江县");
+        return map;
+    }
+
+    public static HashMap<String, String> getAddrName(){
+        HashMap<String, String> map = new HashMap<>(16);
+        map.put("province","福建福州市");
+        map.put("city","连江县");
         return map;
     }
 

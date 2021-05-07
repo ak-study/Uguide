@@ -5,6 +5,7 @@ import com.chinafight.gongxiangdaoyou.eunm.CustomerEnum;
 import com.chinafight.gongxiangdaoyou.model.profile.GuideModel;
 import com.chinafight.gongxiangdaoyou.model.profile.UserModel;
 import com.chinafight.gongxiangdaoyou.provider.TCProvider;
+import com.chinafight.gongxiangdaoyou.service.utils.IPService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ public class Utils {
     public static final HashMap<String, UserModel> userLoginMap = new HashMap<>();
     public static final HashMap<String, GuideModel> guideLoginMap = new HashMap<>();
     private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
+    IPService ipService;
 
     public static boolean deleteFile(String pathname) {
         boolean result = false;
@@ -96,7 +98,7 @@ public class Utils {
     }
 
     public static String getCurCityName(HttpServletRequest request){
-        return (String) request.getSession().getAttribute("city");
+        return IPService.getAddrName().get("city");
     }
 
     public static Logger getLogger(){

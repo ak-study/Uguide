@@ -96,6 +96,13 @@ public class OrderController {
         return OrderEnum.ORDER_EXIT.getMsgMap();
     }
 
+    @GetMapping("clear")
+    public Object clear(){
+        OrderManger.getOrderMangerMap().clear();
+        OrderService.orderMapByGuide.clear();
+        return "success";
+    }
+
     /**
      * @param userModel 用户id
      * @return 订单支付完成，进入提意见阶段
@@ -208,10 +215,12 @@ public class OrderController {
     }
 
 
-    private static OrderManger getOrderManager(UserModel userModel) {
+    private OrderManger getOrderManager(UserModel userModel) {
         OrderManger orderManger = OrderManger.getOrderMangerMap().get(userModel.getUser_id());
-        if (orderManger==null)
-            throw new RuntimeException("订单不存在");
+        if (orderManger==null){
+            UserModel user = userMapper.findUserById(userModel.getUser_id());
+            new OrderManger(user);
+        }
         return orderManger;
     }
 }

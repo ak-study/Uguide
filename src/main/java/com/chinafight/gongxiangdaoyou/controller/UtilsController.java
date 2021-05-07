@@ -3,6 +3,7 @@ package com.chinafight.gongxiangdaoyou.controller;
 import com.chinafight.gongxiangdaoyou.cache.CacheTags;
 import com.chinafight.gongxiangdaoyou.cache.ProfileTag;
 import com.chinafight.gongxiangdaoyou.eunm.CustomerEnum;
+import com.chinafight.gongxiangdaoyou.mapper.utils.ImageUtil;
 import com.chinafight.gongxiangdaoyou.mapper.utils.ImgMapper;
 import com.chinafight.gongxiangdaoyou.model.ImgModel;
 import com.chinafight.gongxiangdaoyou.provider.TCProvider;
@@ -20,6 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.awt.image.RenderedImage;
 import java.io.*;
 import java.net.URL;
@@ -38,16 +41,25 @@ public class UtilsController {
     @Autowired
     IPService ipService;
 
-    @GetMapping("getCode")
-    public Object getImg() throws IOException {
-        return null;
+    @GetMapping(value = "/code")
+    public String getCode(HttpServletRequest request, HttpServletResponse response) throws Exception{
+        response.setContentType("image/jpeg");
+        //禁止图像缓存
+        response.setHeader("Pragma","no-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setDateHeader("Expires", 0);
+        HttpSession session = request.getSession();
+        ImageUtil imageUtil = new ImageUtil(120, 40, 5,30);
+        session.setAttribute("code", imageUtil.getCode());
+        imageUtil.write(response.getOutputStream());
+        return imageUtil.getCode();
     }
 
     @GetMapping("getAddr")
     public Object getAddr(HttpServletRequest request) throws IOException, JSONException {
         String ipAddr = ipService.getIpAddr(request);
         System.out.println(ipAddr);
-        HashMap<Object, Object> cityMap = ipService.getAddrName(ipAddr);
+        HashMap<String, String> cityMap = ipService.getAddrName(ipAddr);
         cityMap.put("ip地址",ipAddr);
         return cityMap;
     }

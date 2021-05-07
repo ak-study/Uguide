@@ -54,7 +54,7 @@ public class UserService {
         user.setUser_power(1);
         user.setUser_lv(1);
         user.setUser_vip(0);
-        user.setUser_avatar("");
+        user.setUser_avatar("https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3275252298,1993070608&fm=26&gp=0.jpg");
         user.setUser_trueName("");
         //前端数据
         user.setUser_password(userPassWord);
@@ -112,10 +112,6 @@ public class UserService {
     public Object updateUserPassWord(Integer userId,String newUserPassWord,String oldUserPassWord){
         UserModel user = userMapper.findUserById(userId);
         HashMap<Object, Object> map = new HashMap<>();
-        if (Utils.userLoginMap.get(user.getUser_name())==null){
-            map.put("status",CustomerEnum.ERROR_USER_LOGIN.getMsgMap());
-            return map;
-        }
         String user_password = user.getUser_password();
         boolean passWordMatches = newUserPassWord.matches(".*[a-zA-Z]+.*");
         if(!passWordMatches || newUserPassWord.length()<6 || newUserPassWord.length()>14){

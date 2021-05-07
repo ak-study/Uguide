@@ -1,7 +1,10 @@
 package com.chinafight.gongxiangdaoyou.model.profile;
 
+import lombok.EqualsAndHashCode;
+
 import javax.validation.constraints.NotNull;
 
+@EqualsAndHashCode
 public class UserModel {
     @NotNull(message = "id不能为空" +
             "")

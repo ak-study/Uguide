@@ -18,10 +18,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 
 @RequestMapping()
@@ -168,28 +167,29 @@ public class UserController {
     @GetMapping("getChatList")
     public Object getChatList(Long userId) {
         List<Chat> chatModels = chatMapper.selectAllById(userId);
-        ArrayList<UserModel> friendList = new ArrayList<>();
+        HashSet<Map<Object,Object>> friendList = new HashSet<>();
         for (Chat chatModel : chatModels) {
             UserModel friend = userMapper.findUserById(Integer.valueOf(chatModel.getFriendId().toString()));
-            friendList.add(friend);
+            Map<Object, Object> map = msgMapper.selectMsgFromLatest(chatModel);
+            Date date = (Date) map.get("create_time");
+            map.put("create_time", date.getTime());
+            map.put("friend",friend);
+            friendList.add(map);
         }
         return CustomerEnum.NORMAL_STATUS.getParaMsgMap(friendList);
     }
 
+
     @GetMapping("insertMsg")
     public Object insertMsg(Msg msg) {
-        Msg firendMsg = new Msg();
-        firendMsg.setFriendId(msg.getUserId());
-        firendMsg.setUserId(msg.getFriendId());
-        firendMsg.setMsg(msg.getMsg());
         msgMapper.insert(msg);
-        msgMapper.insert(firendMsg);
         return CustomerEnum.NORMAL_STATUS.getMsgMap();
     }
 
     @GetMapping("getMsgByUserId")
     public Object getMsgByUserId(Chat chat){
-        return CustomerEnum.NORMAL_STATUS.getParaMsgMap(msgMapper.selectMsgByUserId(chat));
+        List<Map<Object, Object>> myselfMsg = msgMapper.selectMsgByUserId(chat);
+        return CustomerEnum.NORMAL_STATUS.getParaMsgMap(myselfMsg);
     }
 
 }

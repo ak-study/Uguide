@@ -11,6 +11,7 @@ import com.chinafight.gongxiangdaoyou.mapper.profile.UserMapper;
 import com.chinafight.gongxiangdaoyou.model.Guideorder;
 import com.chinafight.gongxiangdaoyou.model.profile.GuideModel;
 import com.chinafight.gongxiangdaoyou.model.profile.UserModel;
+import com.chinafight.gongxiangdaoyou.service.utils.IPService;
 import com.chinafight.gongxiangdaoyou.socket.WebSocketServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,11 +22,13 @@ import java.util.*;
 
 @Service
 public class OrderService {
-    private static HashMap<String, List<OrderByGuide>> orderMapByGuide = new HashMap<>();
+    public static HashMap<String, List<OrderByGuide>> orderMapByGuide = new HashMap<>();
     private GuideMapper guideMapper;
     private UserMapper userMapper;
     @Autowired
     GuideorderMapper guideorderMapper;
+    @Autowired
+    IPService ipService;
 
     /**
      * 导游点击开始接单按钮
@@ -36,7 +39,12 @@ public class OrderService {
      */
     public Object clickBeginOrderReceive(GuideModel guideModel, HttpServletRequest request) {
         OrderByGuide orderByGuide = new OrderByGuide();
-        String city = (String) request.getSession().getAttribute("city");
+        String city = null;
+        try {
+            city = ipService.getAddrName("").get("city").toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         //禁止重复点击接单按钮
         if (orderMapByGuide.get(city) != null)
             for (OrderByGuide byGuide : orderMapByGuide.get(city)) {
@@ -65,7 +73,12 @@ public class OrderService {
     }
 
     public Object stopOrderReceive(GuideModel guideModel,HttpServletRequest request){
-        String city = (String) request.getSession().getAttribute("city");
+        String city = null;
+        try {
+            city = ipService.getAddrName("").get("city");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         if (removeGuide(city,guideModel.getGuide_id()).equals("success"))
         return CustomerEnum.NORMAL_STATUS.getMsgMap();
         else
@@ -123,17 +136,14 @@ public class OrderService {
 
     //导游接单后，在订单列表中删除信息
     private static String removeGuide(String city, Integer guideId) {
-        List<OrderByGuide> orderByGuides = orderMapByGuide.get(city);
-        if (orderByGuides==null || orderByGuides.size()==0){
-            throw new RuntimeException("删除导游接单状态失败");
-        }
+        List<OrderByGuide> orderByGuides = orderMapByGuide.get(IPService.getAddrName().get("city"));
         for (int i = 0; i < orderByGuides.size(); i++) {
             if (orderByGuides.get(i).getGuideModel().getGuide_id().equals(guideId)) {
                 orderByGuides.remove(i);
                 return "success";
             }
         }
-        throw new RuntimeException("删除导游接单状态失败");
+        return  "success";
     }
 
     public void insertOrder(OrderDTO orderDTO){
